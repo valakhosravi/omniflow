@@ -1,0 +1,29 @@
+services:
+  nextapp:
+    container_name: app-ep-local
+    build:
+      context: .
+      dockerfile: dockerfile
+      args:
+        NODE_ENV: development
+        NEXT_PUBLIC_API_BASE_URL: http://localhost:8080
+        NEXT_PUBLIC_CAMUNDA_API_BASE_URL: http://localhost:8080
+    env_file:
+      - .env.local
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
+      - NEXT_PUBLIC_CAMUNDA_API_BASE_URL=http://localhost:8080
+    ports:
+      - "3000:3000"
+    networks:
+      - local-net
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+
+networks:
+  local-net:
+    driver: bridge
+

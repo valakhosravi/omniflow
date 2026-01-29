@@ -1,0 +1,3 @@
+interface EmployeeInfo{
+    Reciever:string
+}
