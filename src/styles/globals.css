@@ -1,0 +1,410 @@
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+@config "../../tailwind.config.js";
+
+@theme {
+  --color-primary-950: oklch(0.3478 0.0805 256.77);
+  --color-primary-900: oklch(0.4265 0.1094 255.05);
+  --color-primary-800: oklch(0.4848 0.1437 256.88);
+  --color-primary-700: oklch(0.5595 0.1719 256.14);
+  --color-primary-600: oklch(0.6243 0.1688 252.32);
+  --color-primary-500: oklch(0.6982 0.1494 245.54);
+  --color-primary-400: oklch(0.7772 0.1205 236.07);
+  --color-primary-300: oklch(0.8518 0.0847 231.08);
+  --color-primary-200: oklch(0.9072 0.0507 232.79);
+  --color-primary-100: oklch(0.9459 0.0291 233.59);
+  --color-primary-50: oklch(0.9764 0.0133 233.74);
+
+  --color-primary-hover: oklch(0.4104 0.1007 257.52);
+  --color-primary-focus: oklch(0.301 0.0689 257.37);
+
+  --color-tag-head: oklch(0.6252 0.1605 259.98);
+
+  --color-logo-1: oklch(0.3475 0.2097 264.98);
+  --color-logo-2: oklch(0.7357 0.2223 48.34);
+  --color-rate: oklch(0.8665 0.1647 90);
+  --color-header-table: oklch(0.9819 0.0029 264.54);
+  --color-day-title: oklch(0.9727 0.0017 247.84);
+
+  --color-secondary-950: oklch(0.2733 0.0075 274.68);
+  --color-secondary-900: oklch(0.3527 0.0107 271.1);
+  --color-secondary-800: oklch(0.386 0.0146 264.39);
+  --color-secondary-700: oklch(0.4277 0.0173 268.27);
+  --color-secondary-600: oklch(0.4925 0.0201 267.61);
+  --color-secondary-500: oklch(0.5515 0.0215 265.86);
+  --color-secondary-400: oklch(0.6667 0.02 268.99);
+  --color-secondary-300: oklch(0.791 0.0108 261.79);
+  --color-secondary-200: oklch(0.8863 0.0082 278.62);
+  --color-secondary-100: oklch(0.9497 0.0027 286.35);
+  --color-secondary-50: oklch(0.9784 0.0011 197.14);
+  --color-secondary-0: oklch(100% 0 0);
+
+  --color-pagination-dropdown: oklch(0.9816 0.0017 247.84);
+  --background-app: oklch(98.5% 0 240);
+  --color-background-devider: oklch(0.8975 0 0);
+  --color-border-dropdown: oklch(0.931 0 0);
+  --color-rate-count: oklch(0.688 0.0354 256.79);
+  --color-border-table: oklch(0.9702 0 0);
+  --color-border-200: oklch(0.9702 0 0);
+  --color-back-list: oklch(0.9517 0.0058 264.53);
+  --color-backdrop: oklch(0.162 0.0242 256.41);
+
+  --color-accent-700: oklch(0.7002 0.1488 246.66);
+  --color-accent-600: oklch(0.9532 0.0218 239.43);
+  --color-accent-500: oklch(0.6083 0.209 27.03);
+  --color-accent-400: oklch(0.9568 0.0221 7.17);
+  --color-accent-300: oklch(0.7972 0.1638 69.62);
+  --color-accent-200: oklch(0.9785 0.031 92.94);
+  --color-accent-100: oklch(0.6731 0.1624 144.21);
+  --color-accent-S-C: oklch(0.9634 0.02 150.1);
+
+  --color-badge-green-primary: oklch(0.7046 0.0927 143.16);
+  --color-badge-green: oklch(0.9728 0.0229 137.24);
+  --color-badge-orange-primary: oklch(0.7962 0.1108 54.65);
+  --color-badge-orange: oklch(0.9635 0.0126 56.25);
+  --color-badge-purple-primary: oklch(0.6904 0.0938 294.57);
+  --color-badge-purple: oklch(0.9523 0.0154 269.98);
+
+  --color-chip-purple: oklch(0.9431 0.0176 296.63);
+
+  --color-trash: oklch(0.6394 0.2487 17.35);
+  --color-error-button: oklch(0.5455 0.1797 28.85);
+  --color-delete-snooze: oklch(0.6427 0.2153 28.81);
+
+  --color-error-200: rgba(255, 23, 81, 0.1);
+  --color-error-100: rgba(255, 23, 81, 0.5);
+  --color-success-100: rgba(76, 175, 80, 0.1);
+}
+
+.dark {
+  --color-secondary-900: oklch(97.8% 0.004 270);
+  --color-secondary-800: oklch(92% 0.002 270);
+  --color-secondary-700: oklch(85% 0.005 270);
+  --color-secondary-600: oklch(75% 0.005 270);
+  --color-secondary-500: oklch(60% 0.01 270);
+  --color-secondary-400: oklch(47% 0.01 270);
+  --color-secondary-300: oklch(37% 0.01 270);
+  --color-secondary-200: oklch(30% 0.01 270);
+  --color-secondary-100: oklch(22% 0.01 270);
+  --color-secondary-50: oklch(17.5% 0.01 270);
+  --color-secondary-0: oklch(15% 0.01 270);
+
+  --backdrop-color: oklch(0% 0 0); /* black backdrop */
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-secondary-0);
+  /* font-family: var(--vazir-font); */
+  /* font-family: "iransans", sans-serif; */
+  /* font-family: IRANYekanX, sans-serif; */
+  font-family: IRANYekanX;
+  /* user-select: none; */
+  font-feature-settings: "ss02";
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input:-webkit-autofill {
+  background-color: transparent !important;
+  transition: background-color 9999s ease-in-out 0s;
+  -webkit-text-fill-color: theme("colors.secondary.900");
+}
+
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.rti--container .rti--input {
+  background-color: rgb(var(--color-secondary-200));
+  color: rgb(var(--color-secondary-800));
+  padding: 0.3rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.textField__input {
+  @apply w-full py-3 px-4 text-secondary-200
+  hover:border-primary-500 focus:border-primary-500 transition-all duration-300 ease-out focus:shadow-md
+   focus:shadow-secondary-400 dark:focus:shadow-secondary-200 bg-transparent focus:bg-transparent hover:bg-transparent
+   focus:outline-none focus:ring-0;
+}
+
+.textField__input-login {
+  @apply w-full py-3 px-4 border-1 rounded-md
+  hover:border-primary-500 focus:border-primary-500 transition-all duration-300 ease-out focus:shadow-md
+  focus:shadow-secondary-400 dark:focus:shadow-secondary-200 bg-transparent focus:bg-transparent hover:bg-transparent
+   focus:outline-none focus:ring-0 relative;
+}
+
+.textField__input:placeholder-shown {
+  text-align: right;
+  padding-right: 2.5rem;
+}
+
+tbody > tr:not(:last-child) {
+  border-bottom: solid 1px rgb(238, 236, 236);
+}
+
+.btn {
+  @apply cursor-pointer text-secondary-0 disabled:cursor-default;
+  @apply transition-colors duration-300 ease-in-out;
+  @apply focus:outline-none;
+}
+
+.btn-success {
+  @apply bg-accent-100 text-secondary-0;
+  @apply hover:bg-secondary-0 hover:border hover:border-accent-100 hover:text-accent-100;
+  @apply focus:bg-secondary-0 focus:border-none focus:text-accent-100;
+}
+
+.btn-warning {
+  @apply bg-accent-300 text-secondary-0;
+  @apply hover:bg-secondary-0 hover:border hover:border-accent-300 hover:text-accent-300;
+  @apply focus:bg-secondary-0 focus:border-none focus:text-accent-300;
+}
+
+.btn-danger {
+  @apply bg-accent-500 text-secondary-0;
+  @apply hover:bg-secondary-0 hover:border hover:border-accent-500 hover:text-accent-500;
+  @apply focus:bg-secondary-0 focus:border-none focus:text-accent-500;
+}
+
+.btn-info {
+  @apply bg-accent-700 text-secondary-0;
+  @apply hover:bg-secondary-0 hover:border hover:border-accent-700 hover:text-accent-700;
+  @apply focus:bg-secondary-0 focus:border-none focus:text-accent-700;
+}
+
+.btn-primary {
+  @apply bg-primary-950 text-white;
+  @apply hover:bg-primary-hover focus:bg-primary-focus;
+  @apply disabled:bg-secondary-200 disabled:text-secondary-500;
+}
+
+.btn-outline {
+  @apply bg-secondary-0 border border-primary-950/[25%] text-primary-950;
+  @apply hover:bg-primary-950/[3%] hover:text-primary-950;
+  @apply focus:bg-primary-950/[8%] focus:text-primary-950;
+  @apply disabled:border-secondary-0 disabled:text-secondary-300 disabled:bg-secondary-0;
+}
+
+.btn-xs {
+  @apply h-[32px] rounded-lg py-[6px] px-[12px];
+}
+
+.btn-sm {
+  @apply h-[36px] rounded-lg;
+}
+
+.btn-md {
+  @apply h-[48px] rounded-xl py-[14px] px-[24px];
+}
+
+.btn-lg {
+  @apply h-[56px] rounded-xl;
+}
+
+.icon-only {
+  @apply min-w-[32px] w-[32px] h-[32px] !p-[6px];
+}
+
+.input {
+  @apply rounded-lg border border-secondary-950/[20%] bg-secondary-0;
+}
+
+.input-sm {
+  @apply pr-10 w-[361px] h-[32px] py-[6px] px-2;
+}
+.input-md {
+  @apply pr-10 w-[361px] h-[48px] py-[14px] px-[16px];
+}
+.input-lg {
+  @apply pr-10 w-[361px] h-[56px] py-[18px] px-[16px];
+}
+
+.shadow-sm {
+  @apply shadow-[-8px_8px_40px_0px_#959DA51F];
+}
+
+.shadow-md {
+  @apply shadow-[-4px_8px_40px_0px_#64646F1A];
+}
+
+.shadow-lg {
+  @apply shadow-[0px_0px_0px_1px_#0000000F];
+}
+
+.loader {
+  aspect-ratio: 4;
+  --c: oklch(0.3478 0.0805 256.77) 90%, #0000;
+  background:
+    radial-gradient(circle closest-side at left 6px top 50%, var(--c)),
+    radial-gradient(circle closest-side, var(--c)),
+    radial-gradient(circle closest-side at right 6px top 50%, var(--c));
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  animation: l4 0.7s infinite alternate;
+}
+@keyframes l4 {
+  to {
+    width: 15px;
+    aspect-ratio: 2;
+  }
+}
+
+tr > td:first-child::before {
+  border-start-start-radius: 0 !important;
+  border-end-start-radius: 0 !important;
+}
+
+tr > td:last-child::before {
+  border-start-end-radius: 0 !important;
+  border-end-end-radius: 0 !important;
+}
+
+.dash-border {
+  border-radius: 12px; /* or whatever you need */
+  --dash-color: rgba(28, 58, 99, 0.2);
+
+  background-image:
+    /* Top */
+    linear-gradient(to right, var(--dash-color) 7.5px, transparent 0%),
+    /* Right */
+    linear-gradient(to bottom, var(--dash-color) 7.5px, transparent 0%),
+    /* Bottom */
+    linear-gradient(to right, var(--dash-color) 7.5px, transparent 0%),
+    /* Left */
+    linear-gradient(to bottom, var(--dash-color) 7.5px, transparent 0%);
+
+  background-position:
+    top,
+    /* top side */ right,
+    /* right side */ bottom,
+    /* bottom side */ left; /* left side */
+
+  background-size:
+    16.3px 1px,
+    /* top: 7.5px dash + 8.8px gap */ 1px 16.3px,
+    /* right */ 16.3px 1px,
+    /* bottom */ 1px 16.3px; /* left */
+
+  background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
+  background-color: white; /* or any base background */
+  position: relative;
+}
+
+.shadow-datepicker {
+  box-shadow: -8px 8px 40px 0 rgba(149, 157, 165, 0.12);
+}
+
+thead tr[tabindex="-1"] {
+  display: none;
+}
+
+input {
+  outline: 0;
+}
+
+textarea {
+  outline: 0;
+}
+
+.group-data-\[selected\=true\]\:bg-primary:is(
+  :where(.group)[data-selected="true"] *
+) {
+  background-color: #1c3a63;
+}
+
+.dir-ltr {
+  direction: ltr;
+}
+
+.custom-select .heroui-select-trigger {
+  background-color: white;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.custom-select .heroui-select-trigger:hover {
+  border-color: #2563eb;
+}
+
+.custom-select .heroui-select-trigger:focus {
+  border-color: #1d4ed8;
+}
+
+.rmdp-panel-body li,
+.rmdp-panel-body li.bg-blue {
+  background-color: #1c3a63 !important;
+}
+
+.rmdp-panel-body li .b-deselect {
+  background-color: #1c3a63 !important;
+}
+
+.rmdp-range {
+  background-color: #1c3a63 !important;
+}
+
+.rmdp-day:not(.rmdp-disabled, .rmdp-day-hidden) span:hover {
+  background-color: #1c3a63b2 !important;
+}
+
+.rmdp-day.rmdp-today span {
+  background-color: #1c3a6380 !important;
+}
+
+.rmdp-week-day {
+  color: #1c3a63 !important;
+}
+
+.rmdp-arrow {
+  border-color: #1c3a63 !important;
+}
+
+.rmdp-panel-body > li {
+  padding: 2px 6px 0 0;
+}
+
+.border-b-primary {
+  border-bottom-color: #1c3a63 !important;
+}
+
+#StiDesigner * {
+  font-family: "Arial" !important;
+}
+
+#StiViewerReportPanel {
+  overflow-y: scroll !important;
+}
+
+.group-data-\[selected\=true\]\:border-primary:is(
+  :where(.group)[data-selected="true"] *
+) {
+  border-color: var(--color-primary-950) !important;
+
+  span {
+    background-color: var(--color-primary-950) !important;
+  }
+}
+
+.jodit-container.jodit {
+  border-radius: 16px !important;
+  overflow: hidden;
+}
+
+.text-danger {
+  color: #ff1751 !important;
+}
+
+section[role="dialog"] {
+  overflow-y: visible !important;
+}

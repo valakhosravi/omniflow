@@ -1,0 +1,158 @@
+"use client";
+import AppButton from "@/components/common/AppButton/AppButton";
+import { Icon } from "@/ui/Icon";
+import {
+  Autocomplete,
+  AutocompleteItem,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "@/ui/NextUi";
+import { useState } from "react";
+import { useCamunda } from "@/packages/camunda";
+import { useRouter, useSearchParams } from "next/navigation";
+import { addToaster } from "@/ui/Toaster";
+import { useGetGroupUserByPropertyQuery } from "@/services/commonApi/commonApi";
+import { GroupUsersPropertyEnum } from "@/services/commonApi/commonApi.type";
+
+interface ReferralModalProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export default function ReferralModal({
+  isOpen,
+  onOpenChange,
+}: ReferralModalProps) {
+  const router = useRouter();
+  const { data: groupUsers } = useGetGroupUserByPropertyQuery(
+    GroupUsersPropertyEnum.DEVELOPMENT,
+  );
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+  const { completeTaskWithPayload } = useCamunda();
+  const searchParams = useSearchParams();
+  const taskId = searchParams.get("taskId");
+
+  const handleCancel = () => {
+    setSelectedUser(null);
+    onOpenChange(false);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!taskId) return;
+    try {
+      await completeTaskWithPayload(taskId, {
+        PmApprove: false,
+        PmDescription: "",
+        HasExpertAssignee: true,
+        PmEdit: false,
+        ExpertAssigneePersonnelId: String(selectedUser.PersonnelId),
+        Summary: "",
+        JiraDescription: "",
+        StackHolder: "",
+      });
+      onOpenChange(false);
+      router.replace("/task-inbox?tab=mytask");
+    } catch (error: any) {
+      addToaster({
+        color: "danger",
+        title: error.data.message,
+      });
+    }
+  };
+
+  const handleModalChange = (open: boolean) => {
+    setSelectedUser(null);
+    onOpenChange(open);
+  };
+
+  return (
+    <Modal isOpen={isOpen} onOpenChange={handleModalChange} hideCloseButton>
+      <form onSubmit={handleSubmit}>
+        <ModalContent className="!w-[746px] max-w-[746px] max-h-[613px]">
+          <ModalHeader className="flex justify-between items-center pt-[20px] px-[24px]">
+            <h1 className="font-semibold text-[16px]/[30px] text-secondary-950">
+              ارجاع درخواست
+            </h1>
+            <Icon
+              name="closeCircle"
+              className="text-secondary-300 cursor-pointer"
+              onClick={() => onOpenChange(false)}
+            />
+          </ModalHeader>
+          <div className="mt-[8px] mb-[14px] mx-[24px] bg-background-devider h-[1px]" />
+          <ModalBody className="px-[24px] py-0 space-y-4">
+            <p className="font-medium text-[16px]/[30px] text-primary-950/[.5]">
+              لطفا تیکت را به فرد مربوطه ارجاع داده و روی تایید کلیک کنید.
+            </p>
+            <div
+              className="border border-primary-950/[.1] rounded-[20px] px-5 py-4
+            h-[150px] min-h-[150px]"
+            >
+              <Autocomplete
+                className="w-full"
+                variant="bordered"
+                label="انتخاب گیرنده"
+                labelPlacement="outside"
+                isRequired
+                placeholder="گیرندگان"
+                selectedKey={selectedUser?.Key}
+                onSelectionChange={(key) => {
+                  const user = groupUsers?.Data?.Values.find(
+                    (u) => u.Key === key,
+                  );
+                  setSelectedUser(user || null);
+                }}
+                errorMessage={`انتخاب گیرنده ضروری است.`}
+                popoverProps={{
+                  offset: 10,
+                  classNames: {
+                    content: "shadow-none",
+                  },
+                }}
+                inputProps={{
+                  classNames: {
+                    input: `font-normal text-[14px]/[20px] text-secondary-400`,
+                    inputWrapper: `px-[8px] py-[6px] border-1 border-primary-950/[.7] rounded-[12px] h-[48px] min-h-[48px] shadow-none`,
+                    innerWrapper: ``,
+                  },
+                }}
+                classNames={{
+                  base: `text-sm text-secondary-950 bg-white w-[213px]`,
+                  selectorButton: `text-secondary-400`,
+                  popoverContent: `border border-default-300`,
+                }}
+              >
+                {(groupUsers?.Data?.Values ?? []).map((user) => (
+                  <AutocompleteItem
+                    className="data-[selected=true]:opacity-60"
+                    key={user.Key}
+                  >
+                    {user.DisplayName}
+                  </AutocompleteItem>
+                ))}
+              </Autocomplete>
+            </div>
+          </ModalBody>
+          <ModalFooter className="flex items-center justify-end gap-x-[16px] pt-[150px] pb-[20px] px-[24px]">
+            <AppButton
+              label="انصراف"
+              variant="outline"
+              size="small"
+              onClick={handleCancel}
+            />
+            <AppButton
+              label="ارجاع"
+              type="submit"
+              size="small"
+            />
+          </ModalFooter>
+        </ModalContent>
+      </form>
+    </Modal>
+  );
+}

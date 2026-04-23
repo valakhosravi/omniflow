@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  nextapp:
+    container_name: app-ep
+    build:
+      context: .
+      dockerfile: dockerfile
+      network: shared-net
+      args:
+        NEXT_PUBLIC_NODE_ENV: test
+        NEXT_PUBLIC_APP_ENV: test
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
+        NEXT_PUBLIC_CAMUNDA_API_BASE_URL: ${NEXT_PUBLIC_CAMUNDA_API_BASE_URL}
+        APP_ENV: test
+    env_file:
+      - .env.test
+    environment:
+      - NEXT_PUBLIC_NODE_ENV=test
+      - NEXT_PUBLIC_APP_ENV=test
+      - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
+      - NEXT_PUBLIC_CAMUNDA_API_BASE_URL=${NEXT_PUBLIC_CAMUNDA_API_BASE_URL}
+    ports:
+      - "3000:3000"
+      - "80:3000"
+      - "443:3000"
+    networks:
+      - shared-net
+networks:
+  shared-net:
+    external: true
