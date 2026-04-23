@@ -1,11 +1,7 @@
-/* eslint-disable */
 import { faker } from "@faker-js/faker";
 import type {
   CategoryDto,
   CourseDto,
-  CourseByCategoryDto,
-  CourseInfoDto,
-  CourseAssignableUserDto,
   SeasonDto,
   SectionDto,
   TeacherDto,
@@ -17,11 +13,10 @@ import type {
   CreateSectionRequest,
   UpdateSectionRequest,
   CreateSectionAndUploadFileRequest,
-  GetCourseAssignableUsersRequest,
-  AssignUsersToCourseRequest,
+  CreateTeacherRequest,
+  UpdateTeacherRequest,
 } from "./learning.types";
 import type { GeneralResponse } from "@/services/commonApi/commonApi.type";
-import type { Pagination } from "@/models/general-response/pagination";
 
 // ─── Response helpers ─────────────────────────────────────────────────────────
 
@@ -64,11 +59,10 @@ let _teacherId = 100;
 let _courseId = 100;
 let _seasonId = 100;
 let _sectionId = 100;
-let _userId = 100;
 
 // ─── Generators ───────────────────────────────────────────────────────────────
 
-function generateSection(seasonId: number): SectionDto {
+function generateSection(seasonId: number, _order: number): SectionDto {
   return {
     SectionId: _sectionId++,
     Title: faker.lorem.sentence({ min: 2, max: 5 }),
@@ -86,8 +80,8 @@ function generateSeason(courseId: number, order: number): SeasonDto {
     CourseId: courseId,
     IsActive: true,
     OrderNumber: order,
-    Sections: Array.from({ length: sectionCount }, () =>
-      generateSection(seasonId),
+    Sections: Array.from({ length: sectionCount }, (_, i) =>
+      generateSection(seasonId, i + 1),
     ),
   };
 }
@@ -124,8 +118,6 @@ class MockStore {
   categories: CategoryDto[];
   teachers: TeacherDto[];
   courses: CourseDto[];
-  users: CourseAssignableUserDto[];
-  courseUsers: Record<number, number[]>;
 
   constructor() {
     this.categories = Array.from({ length: 6 }, () => ({
@@ -146,31 +138,6 @@ class MockStore {
     this.courses = Array.from({ length: 8 }, () =>
       generateCourse(this.categories, this.teachers),
     );
-
-    this.users = Array.from({ length: 40 }, () => ({
-      UserId: _userId++,
-      PersonnelId: faker.number.int({ min: 1000, max: 99999 }),
-      FullName: faker.person.fullName(),
-      Department: faker.helpers.arrayElement([
-        "فناوری اطلاعات",
-        "مالی",
-        "منابع انسانی",
-        "بازرگانی",
-        "عملیات",
-      ]),
-      Title: faker.person.jobTitle(),
-      IsAssigned: false,
-    }));
-
-    this.courseUsers = {};
-    this.courses.forEach((course) => {
-      const assignedCount = faker.number.int({ min: 3, max: 10 });
-      const assignedUsers = faker.helpers.arrayElements(
-        this.users,
-        assignedCount,
-      );
-      this.courseUsers[course.CourseId] = assignedUsers.map((u) => u.UserId);
-    });
   }
 
   findSeason(seasonId: number): SeasonDto | undefined {
@@ -184,7 +151,9 @@ class MockStore {
   findSection(sectionId: number): SectionDto | undefined {
     for (const course of this.courses) {
       for (const season of course.Seasons ?? []) {
-        const section = season.Sections?.find((s) => s.SectionId === sectionId);
+        const section = season.Sections?.find(
+          (s) => s.SectionId === sectionId,
+        );
         if (section) return section;
       }
     }
@@ -235,131 +204,6 @@ export async function mockGetCourseById(
   const course = getStore().courses.find((c) => c.CourseId === id);
   if (!course) return notFound("دوره مورد نظر یافت نشد");
   return ok(course);
-}
-
-export async function mockGetCoursesByCategoryId(
-  categoryId: number,
-): Promise<MockOk<CourseByCategoryDto[]> | MockErr> {
-  await delay();
-  const courses = getStore()
-    .courses.filter((c) => c.CategoryId === categoryId)
-    .map<CourseByCategoryDto>((c) => ({
-      CategoryName: c.CategoryName,
-      TeacherName: c.TeacherName,
-      Seasons: c.Seasons,
-      CourseId: c.CourseId,
-      CategoryId: c.CategoryId,
-      TeacherId: c.TeacherId,
-      Title: c.Title,
-      Description: c.Description,
-      Image: c.Image,
-      IsActive: c.IsActive,
-      DurationHours: Math.ceil(c.DurationMinutes / 60),
-      CreatedDate: c.CreatedDate,
-    }));
-  return ok(courses);
-}
-
-export async function mockGetCourseInfoById(
-  id: number,
-): Promise<MockOk<CourseInfoDto> | MockErr> {
-  await delay();
-  const course = getStore().courses.find((c) => c.CourseId === id);
-  if (!course) return notFound("دوره مورد نظر یافت نشد");
-
-  const courseInfo: CourseInfoDto = {
-    CategoryName: course.CategoryName,
-    TeacherName: course.TeacherName,
-    Seasons: (course.Seasons ?? []).map((season) => ({
-      SeasonId: season.SeasonId,
-      Title: season.Title,
-      CourseId: season.CourseId,
-      IsActive: season.IsActive,
-      OrderNumber: season.OrderNumber,
-      Sections: (season.Sections ?? []).map((section) => ({
-        SectionId: section.SectionId,
-        Title: section.Title,
-        SeasonId: section.SeasonId,
-        CreatedDate: section.CreatedDate,
-        SectionMedia: [],
-      })),
-    })),
-    CourseId: course.CourseId,
-    CategoryId: course.CategoryId,
-    TeacherId: course.TeacherId,
-    Title: course.Title,
-    Description: course.Description,
-    Image: course.Image,
-    IsActive: course.IsActive,
-    DurationHours: Math.ceil(course.DurationMinutes / 60),
-    CreatedDate: course.CreatedDate,
-  };
-
-  return ok(courseInfo);
-}
-
-export async function mockGetCourseAssignableUsers(
-  params: GetCourseAssignableUsersRequest,
-): Promise<MockOk<Pagination<CourseAssignableUserDto>> | MockErr> {
-  await delay();
-  const store = getStore();
-  const course = store.courses.find((c) => c.CourseId === params.courseId);
-  if (!course) return notFound("دوره مورد نظر یافت نشد");
-
-  const assignedSet = new Set(store.courseUsers[params.courseId] ?? []);
-  const searchTerm = params.searchTerm?.trim().toLowerCase() ?? "";
-
-  const filtered = store.users
-    .map<CourseAssignableUserDto>((user) => ({
-      ...user,
-      IsAssigned: assignedSet.has(user.UserId),
-    }))
-    .filter((user) => {
-      const matchesSearch =
-        !searchTerm ||
-        user.FullName.toLowerCase().includes(searchTerm) ||
-        String(user.PersonnelId).includes(searchTerm);
-
-      const matchesDepartment =
-        !params.department || user.Department === params.department;
-
-      return matchesSearch && matchesDepartment;
-    });
-
-  const pageNumber = Math.max(1, params.pageNumber);
-  const pageSize = Math.max(1, params.pageSize);
-  const totalCount = filtered.length;
-  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
-  const currentPage = Math.min(pageNumber, totalPages);
-  const start = (currentPage - 1) * pageSize;
-  const items = filtered.slice(start, start + pageSize);
-
-  return ok({
-    Items: items,
-    TotalCount: totalCount,
-    PageSize: pageSize,
-    CurrentPage: currentPage,
-    TotalPages: totalPages,
-    HasPrevious: currentPage > 1,
-    HasNext: currentPage < totalPages,
-  });
-}
-
-export async function mockAssignUsersToCourse(
-  body: AssignUsersToCourseRequest,
-): Promise<MockOk<null> | MockErr> {
-  await delay();
-  const store = getStore();
-  const course = store.courses.find((c) => c.CourseId === body.CourseId);
-  if (!course) return notFound("دوره مورد نظر یافت نشد");
-
-  const validUserIds = new Set(store.users.map((u) => u.UserId));
-  const normalizedUserIds = Array.from(
-    new Set(body.UserIds.filter((id) => validUserIds.has(id))),
-  );
-  store.courseUsers[body.CourseId] = normalizedUserIds;
-
-  return ok(null);
 }
 
 export async function mockCreateCourse(
@@ -626,4 +470,55 @@ export async function mockSearchTeachers(
     t.FullName?.toLowerCase().includes(value.toLowerCase()),
   );
   return ok(filtered);
+}
+
+export async function mockGetTeacherById(
+  id: number,
+): Promise<MockOk<TeacherDto> | MockErr> {
+  await delay();
+  const teacher = getStore().teachers.find((t) => t.TeacherId === id);
+  if (!teacher) return notFound("مدرس مورد نظر یافت نشد");
+  return ok(teacher);
+}
+
+export async function mockCreateTeacher(
+  data: CreateTeacherRequest,
+): Promise<MockOk<TeacherDto> | MockErr> {
+  await delay();
+  const newTeacher: TeacherDto = {
+    TeacherId: _teacherId++,
+    FullName: data.FullName,
+    Mobile: data.Mobile,
+    Avatar: faker.image.avatar(),
+    CreatedDate: new Date().toISOString(),
+  };
+  getStore().teachers.push(newTeacher);
+  return ok(newTeacher);
+}
+
+export async function mockUpdateTeacher(
+  id: number,
+  body: UpdateTeacherRequest,
+): Promise<MockOk<TeacherDto> | MockErr> {
+  await delay();
+  const store = getStore();
+  const idx = store.teachers.findIndex((t) => t.TeacherId === id);
+  if (idx === -1) return notFound("مدرس مورد نظر یافت نشد");
+  store.teachers[idx] = {
+    ...store.teachers[idx],
+    FullName: body.FullName,
+    Mobile: body.Mobile,
+  };
+  return ok(store.teachers[idx]);
+}
+
+export async function mockDeleteTeacher(
+  id: number,
+): Promise<MockOk<null> | MockErr> {
+  await delay();
+  const store = getStore();
+  const idx = store.teachers.findIndex((t) => t.TeacherId === id);
+  if (idx === -1) return notFound("مدرس مورد نظر یافت نشد");
+  store.teachers.splice(idx, 1);
+  return ok(null);
 }

@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { AppIcon } from "@/components/common/AppIcon";
 import TableTop from "@/components/TableTop";
 import { useDisclosure, Chip } from "@/ui/NextUi";
 import DeleteConfirmModal from "@/ui/DeleteConfirmModal";
 import OperationDropdown, { DropdownAction } from "@/ui/OperationDropdown";
-import { Icon } from "@/ui/Icon";
 import {
   useGetSeasonsByCourseIdQuery,
   useDeleteSeasonMutation,
@@ -85,13 +85,13 @@ export default function SeasonTable({ courseId, onEdit }: SeasonTableProps) {
           {
             key: "edit",
             label: "ویرایش",
-            icon: <Icon name="edit" className="size-[20px]" />,
+            icon: <AppIcon name="Edit" size={20} />,
             onClick: () => onEdit(row.SeasonId),
           },
           {
             key: "sections",
             label: "مدیریت بخش‌ها",
-            icon: <Icon name="eye" className="size-[20px]" />,
+            icon: <AppIcon name="Eye" size={20} />,
             onClick: () =>
               router.push(
                 `/academy/learning/courses/${courseId}/seasons/${row.SeasonId}/sections`,
@@ -100,7 +100,7 @@ export default function SeasonTable({ courseId, onEdit }: SeasonTableProps) {
           {
             key: "delete",
             label: "حذف",
-            icon: <Icon name="trash" className="size-[20px]" />,
+            icon: <AppIcon name="Trash" size={20} />,
             color: "danger",
             onClick: () => handleDelete(row.SeasonId),
           },

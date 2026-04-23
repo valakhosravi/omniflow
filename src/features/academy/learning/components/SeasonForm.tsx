@@ -10,15 +10,16 @@ import {
   ModalHeader,
 } from "@/ui/NextUi";
 import AppInput from "@/components/common/AppInput";
-import CustomButton from "@/ui/Button";
-import { Icon } from "@/ui/Icon";
+import AppButton from "@/components/common/AppButton/AppButton";
+import { AppIcon } from "@/components/common/AppIcon";
+import useSeasonFormValidation, {
+  SeasonFormValues,
+} from "../validations/useSeasonFormValidation";
 import {
   useCreateSeasonMutation,
   useUpdateSeasonMutation,
   useGetSeasonByIdQuery,
 } from "../learning.services";
-import { SeasonFormValues } from "../learning.types";
-import useSeasonFormValidation from "../hooks/useSeasonFormValidation";
 
 interface SeasonFormProps {
   isOpen: boolean;
@@ -101,7 +102,7 @@ export default function SeasonForm({
             {seasonId ? "ویرایش فصل" : "اضافه کردن فصل"}
           </span>
           <span className="cursor-pointer" onClick={() => onOpenChange()}>
-            <Icon name="close" className="text-secondary-300" />
+            <AppIcon name="CloseCircle" size={20} className="text-secondary-300" />
           </span>
         </ModalHeader>
         <div className="h-[1px] bg-secondary-100 w-[506px] mx-auto mb-[15px]" />
@@ -148,16 +149,13 @@ export default function SeasonForm({
             </div>
           </ModalBody>
           <ModalFooter className="px-0">
-            <CustomButton
+            <AppButton
               type="submit"
-              buttonVariant="primary"
-              buttonSize="md"
-              isDisabled={isCreating || isUpdating}
-              isLoading={isCreating || isUpdating}
-              className="font-semibold text-[14px]/[20px]"
-            >
-              {seasonId ? "ویرایش فصل" : "اضافه کردن فصل"}
-            </CustomButton>
+              color="primary"
+              disabled={isCreating || isUpdating}
+              loading={isCreating || isUpdating}
+              label={seasonId ? "ویرایش فصل" : "اضافه کردن فصل"}
+            />
           </ModalFooter>
         </form>
       </ModalContent>

@@ -1,4 +1,4 @@
-import CoursesPageComponent from "@/features/academy/learning/components/CoursesPageComponent";
+import CoursesPage from "@/features/academy/learning/components/CoursesPage";
 
 export const metadata = {
   title: "TIKA | لیست دوره‌ها",
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function Page() {
-  return <CoursesPageComponent />;
+  return <CoursesPage />;
 }

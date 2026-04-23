@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { AppIcon } from "@/components/common/AppIcon";
 import TableTop from "@/components/TableTop";
 import { useDisclosure } from "@/ui/NextUi";
 import DeleteConfirmModal from "@/ui/DeleteConfirmModal";
 import OperationDropdown, { DropdownAction } from "@/ui/OperationDropdown";
-import { Icon } from "@/ui/Icon";
 import {
   useGetSectionsBySeasonIdQuery,
   useDeleteSectionMutation,
@@ -13,11 +14,17 @@ import {
 import type { SectionDto } from "../learning.types";
 
 interface SectionTableProps {
+  courseId: number;
   seasonId: number;
   onEdit: (id: number) => void;
 }
 
-export default function SectionTable({ seasonId, onEdit }: SectionTableProps) {
+export default function SectionTable({
+  courseId,
+  seasonId,
+  onEdit,
+}: SectionTableProps) {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const { data: sectionsData, isLoading } =
@@ -71,13 +78,22 @@ export default function SectionTable({ seasonId, onEdit }: SectionTableProps) {
           {
             key: "edit",
             label: "ویرایش",
-            icon: <Icon name="edit" className="size-[20px]" />,
+            icon: <AppIcon name="Edit" size={20} />,
             onClick: () => onEdit(row.SectionId),
+          },
+          {
+            key: "view",
+            label: "مشاهده محتوا",
+            icon: <AppIcon name="Eye" size={20} />,
+            onClick: () =>
+              router.push(
+                `/academy/learning/courses/${courseId}/seasons/${seasonId}/sections/${row.SectionId}`,
+              ),
           },
           {
             key: "delete",
             label: "حذف",
-            icon: <Icon name="trash" className="size-[20px]" />,
+            icon: <AppIcon name="Trash" size={20} />,
             color: "danger",
             onClick: () => handleDelete(row.SectionId),
           },

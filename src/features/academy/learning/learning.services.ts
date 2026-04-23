@@ -1,13 +1,9 @@
 import { baseQueryWithReauth } from "@/store/core/baseQuery";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { GeneralResponse } from "@/services/commonApi/commonApi.type";
-import { Pagination } from "@/models/general-response/pagination";
 import {
   CategoryDto,
   CourseDto,
-  CourseByCategoryDto,
-  CourseInfoDto,
-  CourseAssignableUserDto,
   SeasonDto,
   SectionDto,
   TeacherDto,
@@ -19,12 +15,11 @@ import {
   CreateSectionRequest,
   UpdateSectionRequest,
   CreateSectionAndUploadFileRequest,
-  GetCourseAssignableUsersRequest,
-  AssignUsersToCourseRequest,
+  CreateTeacherRequest,
+  UpdateTeacherRequest,
 } from "./learning.types";
 
-// const IS_MOCK = process.env.NODE_ENV === "development";
-const IS_MOCK = false;
+const IS_MOCK = process.env.NODE_ENV === "development";
 
 function toFormData<T extends Record<string, unknown>>(data: T): FormData {
   const formData = new FormData();
@@ -60,7 +55,7 @@ export const learningApi = createApi({
           return m.mockGetAllCategories() as any;
         }
         return baseQuery({
-          url: "/v1/Academy/Learning/Category/GetAll",
+          url: "/Academy/Learning/v1/Category/GetAll",
           method: "GET",
         }) as any;
       },
@@ -74,7 +69,7 @@ export const learningApi = createApi({
           return m.mockSearchCategories(value) as any;
         }
         return baseQuery({
-          url: "/v1/Academy/Learning/Category/Search",
+          url: "/Academy/Learning/v1/Category/Search",
           method: "GET",
           params: { value },
         }) as any;
@@ -90,7 +85,7 @@ export const learningApi = createApi({
           return m.mockGetAllCourses() as any;
         }
         return baseQuery({
-          url: "/v1/Academy/Learning/Course/GetAll",
+          url: "/Academy/Learning/v1/Course/GetAll",
           method: "GET",
         }) as any;
       },
@@ -104,94 +99,11 @@ export const learningApi = createApi({
           return m.mockGetCourseById(id) as any;
         }
         return baseQuery({
-          url: `/v1/Academy/Learning/Course/GetById/${id}`,
+          url: `/Academy/Learning/v1/Course/GetById/${id}`,
           method: "GET",
         }) as any;
       },
       providesTags: (_result, _error, id) => [{ type: "Course", id }],
-    }),
-
-    getCoursesByCategoryId: builder.query<
-      GeneralResponse<CourseByCategoryDto[]>,
-      number
-    >({
-      queryFn: async (categoryId, _api, _opts, baseQuery) => {
-        if (IS_MOCK) {
-          const m = await import("./learning.mock");
-          return m.mockGetCoursesByCategoryId(categoryId) as any;
-        }
-        return baseQuery({
-          url: `/v1/Academy/Learning/Course/GetByCategoryId/${categoryId}`,
-          method: "GET",
-        }) as any;
-      },
-      providesTags: ["Course"],
-    }),
-
-    getCourseInfoById: builder.query<GeneralResponse<CourseInfoDto>, number>({
-      queryFn: async (id, _api, _opts, baseQuery) => {
-        if (IS_MOCK) {
-          const m = await import("./learning.mock");
-          return m.mockGetCourseInfoById(id) as any;
-        }
-        return baseQuery({
-          url: `/v1/Academy/Learning/Course/GetInfoById/${id}`,
-          method: "GET",
-        }) as any;
-      },
-      providesTags: (_result, _error, id) => [{ type: "Course", id }],
-    }),
-
-    getCourseAssignableUsers: builder.query<
-      GeneralResponse<Pagination<CourseAssignableUserDto>>,
-      GetCourseAssignableUsersRequest
-    >({
-      queryFn: async (
-        { courseId, pageNumber, pageSize, searchTerm, department },
-        _api,
-        _opts,
-        baseQuery,
-      ) => {
-        if (IS_MOCK) {
-          const m = await import("./learning.mock");
-          return m.mockGetCourseAssignableUsers({
-            courseId,
-            pageNumber,
-            pageSize,
-            searchTerm,
-            department,
-          }) as any;
-        }
-        return baseQuery({
-          url: `/v1/Academy/Learning/Course/GetUsersByCourseId/${courseId}`,
-          method: "GET",
-          params: {
-            pageNumber,
-            pageSize,
-            searchTerm,
-            department,
-          },
-        }) as any;
-      },
-      providesTags: ["Course"],
-    }),
-
-    assignUsersToCourse: builder.mutation<
-      GeneralResponse<null>,
-      AssignUsersToCourseRequest
-    >({
-      queryFn: async (body, _api, _opts, baseQuery) => {
-        if (IS_MOCK) {
-          const m = await import("./learning.mock");
-          return m.mockAssignUsersToCourse(body) as any;
-        }
-        return baseQuery({
-          url: "/v1/Academy/Learning/Course/AssignUsers",
-          method: "POST",
-          body,
-        }) as any;
-      },
-      invalidatesTags: ["Course"],
     }),
 
     createCourse: builder.mutation<
@@ -204,7 +116,7 @@ export const learningApi = createApi({
           return m.mockCreateCourse(data) as any;
         }
         return baseQuery({
-          url: "/v1/Academy/Learning/Course/Create",
+          url: "/Academy/Learning/v1/Course/Create",
           method: "POST",
           body: toFormData(data as unknown as Record<string, unknown>),
         }) as any;
@@ -222,7 +134,7 @@ export const learningApi = createApi({
           return m.mockUpdateCourse(id, body) as any;
         }
         return baseQuery({
-          url: `/v1/Academy/Learning/Course/Update/${id}`,
+          url: `/Academy/Learning/v1/Course/Update/${id}`,
           method: "PUT",
           body: toFormData(body as unknown as Record<string, unknown>),
         }) as any;
@@ -240,7 +152,7 @@ export const learningApi = createApi({
           return m.mockDeleteCourse(id) as any;
         }
         return baseQuery({
-          url: `/v1/Academy/Learning/Course/Delete/${id}`,
+          url: `/Academy/Learning/v1/Course/Delete/${id}`,
           method: "DELETE",
         }) as any;
       },
@@ -254,7 +166,7 @@ export const learningApi = createApi({
           return m.mockChangeCourseStatus(id) as any;
         }
         return baseQuery({
-          url: `/v1/Academy/Learning/Course/ChangeStatus/${id}`,
+          url: `/Academy/Learning/v1/Course/ChangeStatus/${id}`,
           method: "PATCH",
         }) as any;
       },
@@ -272,21 +184,24 @@ export const learningApi = createApi({
           return m.mockGetSeasonById(id) as any;
         }
         return baseQuery({
-          url: `/v1/Academy/Learning/Season/GetById/${id}`,
+          url: `/Academy/Learning/v1/Season/GetById/${id}`,
           method: "GET",
         }) as any;
       },
       providesTags: (_result, _error, id) => [{ type: "Season", id }],
     }),
 
-    getSeasonsByCourseId: builder.query<GeneralResponse<SeasonDto[]>, number>({
+    getSeasonsByCourseId: builder.query<
+      GeneralResponse<SeasonDto[]>,
+      number
+    >({
       queryFn: async (courseId, _api, _opts, baseQuery) => {
         if (IS_MOCK) {
           const m = await import("./learning.mock");
           return m.mockGetSeasonsByCourseId(courseId) as any;
         }
         return baseQuery({
-          url: "/v1/Academy/Learning/Season/GetAllByCourseId",
+          url: "/Academy/Learning/v1/Season/GetAllByCourseId",
           method: "GET",
           params: { courseId },
         }) as any;
@@ -304,7 +219,7 @@ export const learningApi = createApi({
           return m.mockCreateSeason(body) as any;
         }
         return baseQuery({
-          url: "/v1/Academy/Learning/Season/Create",
+          url: "/Academy/Learning/v1/Season/Create",
           method: "POST",
           body,
         }) as any;
@@ -322,7 +237,7 @@ export const learningApi = createApi({
           return m.mockUpdateSeason(id, body) as any;
         }
         return baseQuery({
-          url: `/v1/Academy/Learning/Season/Update/${id}`,
+          url: `/Academy/Learning/v1/Season/Update/${id}`,
           method: "PUT",
           body,
         }) as any;
@@ -340,7 +255,7 @@ export const learningApi = createApi({
           return m.mockDeleteSeason(id) as any;
         }
         return baseQuery({
-          url: `/v1/Academy/Learning/Season/Delete/${id}`,
+          url: `/Academy/Learning/v1/Season/Delete/${id}`,
           method: "DELETE",
         }) as any;
       },
@@ -357,7 +272,7 @@ export const learningApi = createApi({
           return m.mockChangeSeasonOrder(body) as any;
         }
         return baseQuery({
-          url: "/v1/Academy/Learning/Season/ChangeOrder",
+          url: "/Academy/Learning/v1/Season/ChangeOrder",
           method: "PUT",
           body,
         }) as any;
@@ -373,29 +288,30 @@ export const learningApi = createApi({
           return m.mockGetSectionById(id) as any;
         }
         return baseQuery({
-          url: `/v1/Academy/Learning/Section/GetById/${id}`,
+          url: `/Academy/Learning/v1/Section/GetById/${id}`,
           method: "GET",
         }) as any;
       },
       providesTags: (_result, _error, id) => [{ type: "Section", id }],
     }),
 
-    getSectionsBySeasonId: builder.query<GeneralResponse<SectionDto[]>, number>(
-      {
-        queryFn: async (seasonId, _api, _opts, baseQuery) => {
-          if (IS_MOCK) {
-            const m = await import("./learning.mock");
-            return m.mockGetSectionsBySeasonId(seasonId) as any;
-          }
-          return baseQuery({
-            url: "/v1/Academy/Learning/Section/GetBySeasonId",
-            method: "GET",
-            params: { seasonId },
-          }) as any;
-        },
-        providesTags: ["Section"],
+    getSectionsBySeasonId: builder.query<
+      GeneralResponse<SectionDto[]>,
+      number
+    >({
+      queryFn: async (seasonId, _api, _opts, baseQuery) => {
+        if (IS_MOCK) {
+          const m = await import("./learning.mock");
+          return m.mockGetSectionsBySeasonId(seasonId) as any;
+        }
+        return baseQuery({
+          url: "/Academy/Learning/v1/Section/GetBySeasonId",
+          method: "GET",
+          params: { seasonId },
+        }) as any;
       },
-    ),
+      providesTags: ["Section"],
+    }),
 
     createSection: builder.mutation<
       GeneralResponse<SectionDto>,
@@ -407,7 +323,7 @@ export const learningApi = createApi({
           return m.mockCreateSection(body) as any;
         }
         return baseQuery({
-          url: "/v1/Academy/Learning/Section/Create",
+          url: "/Academy/Learning/v1/Section/Create",
           method: "POST",
           body,
         }) as any;
@@ -425,7 +341,7 @@ export const learningApi = createApi({
           return m.mockUpdateSection(id, body) as any;
         }
         return baseQuery({
-          url: `/v1/Academy/Learning/Section/Update/${id}`,
+          url: `/Academy/Learning/v1/Section/Update/${id}`,
           method: "PUT",
           body,
         }) as any;
@@ -443,7 +359,7 @@ export const learningApi = createApi({
           return m.mockDeleteSection(id) as any;
         }
         return baseQuery({
-          url: `/v1/Academy/Learning/Section/Delete/${id}`,
+          url: `/Academy/Learning/v1/Section/Delete/${id}`,
           method: "DELETE",
         }) as any;
       },
@@ -460,7 +376,7 @@ export const learningApi = createApi({
           return m.mockCreateSectionAndUploadFile(data) as any;
         }
         return baseQuery({
-          url: "/v1/Academy/Learning/Section/CreateAndUploadFile",
+          url: "/Academy/Learning/v1/Section/CreateAndUploadFile",
           method: "POST",
           body: toFormData(data as unknown as Record<string, unknown>),
         }) as any;
@@ -476,7 +392,7 @@ export const learningApi = createApi({
           return m.mockGetAllTeachers() as any;
         }
         return baseQuery({
-          url: "/v1/Academy/Learning/Teacher/GetAll",
+          url: "/Academy/Learning/v1/Teacher/GetAll",
           method: "GET",
         }) as any;
       },
@@ -490,12 +406,79 @@ export const learningApi = createApi({
           return m.mockSearchTeachers(value) as any;
         }
         return baseQuery({
-          url: "/v1/Academy/Learning/Teacher/Search",
+          url: "/Academy/Learning/v1/Teacher/Search",
           method: "GET",
           params: { value },
         }) as any;
       },
       providesTags: ["Teacher"],
+    }),
+
+    getTeacherById: builder.query<GeneralResponse<TeacherDto>, number>({
+      queryFn: async (id, _api, _opts, baseQuery) => {
+        if (IS_MOCK) {
+          const m = await import("./learning.mock");
+          return m.mockGetTeacherById(id) as any;
+        }
+        return baseQuery({
+          url: `/Academy/Learning/v1/Teacher/GetById/${id}`,
+          method: "GET",
+        }) as any;
+      },
+      providesTags: (_result, _error, id) => [{ type: "Teacher", id }],
+    }),
+
+    createTeacher: builder.mutation<
+      GeneralResponse<TeacherDto>,
+      CreateTeacherRequest
+    >({
+      queryFn: async (body, _api, _opts, baseQuery) => {
+        if (IS_MOCK) {
+          const m = await import("./learning.mock");
+          return m.mockCreateTeacher(body) as any;
+        }
+        return baseQuery({
+          url: "/Academy/Learning/v1/Teacher/Create",
+          method: "POST",
+          body: toFormData(body as unknown as Record<string, unknown>),
+        }) as any;
+      },
+      invalidatesTags: ["Teacher"],
+    }),
+
+    updateTeacher: builder.mutation<
+      GeneralResponse<TeacherDto>,
+      { id: number; body: UpdateTeacherRequest }
+    >({
+      queryFn: async ({ id, body }, _api, _opts, baseQuery) => {
+        if (IS_MOCK) {
+          const m = await import("./learning.mock");
+          return m.mockUpdateTeacher(id, body) as any;
+        }
+        return baseQuery({
+          url: `/Academy/Learning/v1/Teacher/Update/${id}`,
+          method: "PUT",
+          body: toFormData(body as unknown as Record<string, unknown>),
+        }) as any;
+      },
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Teacher", id },
+        "Teacher",
+      ],
+    }),
+
+    deleteTeacher: builder.mutation<GeneralResponse<null>, number>({
+      queryFn: async (id, _api, _opts, baseQuery) => {
+        if (IS_MOCK) {
+          const m = await import("./learning.mock");
+          return m.mockDeleteTeacher(id) as any;
+        }
+        return baseQuery({
+          url: `/Academy/Learning/v1/Teacher/Delete/${id}`,
+          method: "DELETE",
+        }) as any;
+      },
+      invalidatesTags: ["Teacher"],
     }),
   }),
 });
@@ -509,10 +492,6 @@ export const {
   // Course
   useGetAllCoursesQuery,
   useGetCourseByIdQuery,
-  useGetCoursesByCategoryIdQuery,
-  useGetCourseInfoByIdQuery,
-  useGetCourseAssignableUsersQuery,
-  useAssignUsersToCourseMutation,
   useCreateCourseMutation,
   useUpdateCourseMutation,
   useDeleteCourseMutation,
@@ -535,4 +514,8 @@ export const {
   useGetAllTeachersQuery,
   useSearchTeachersQuery,
   useLazySearchTeachersQuery,
+  useGetTeacherByIdQuery,
+  useCreateTeacherMutation,
+  useUpdateTeacherMutation,
+  useDeleteTeacherMutation,
 } = learningApi;

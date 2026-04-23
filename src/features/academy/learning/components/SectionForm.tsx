@@ -11,18 +11,19 @@ import {
 } from "@/ui/NextUi";
 import AppInput from "@/components/common/AppInput";
 import AppFile from "@/components/common/AppFile";
+import AppButton from "@/components/common/AppButton/AppButton";
+import { AppIcon } from "@/components/common/AppIcon";
 import { FileType } from "@/components/common/AppFile/AppFile.types";
 import { FeatureNamesEnum } from "@/components/common/AppFile/AppFile.const";
-import CustomButton from "@/ui/Button";
-import { Icon } from "@/ui/Icon";
+import useSectionFormValidation, {
+  SectionFormValues,
+} from "../validations/useSectionFormValidation";
 import {
   useCreateSectionMutation,
   useCreateSectionAndUploadFileMutation,
   useUpdateSectionMutation,
   useGetSectionByIdQuery,
 } from "../learning.services";
-import { SectionFormValues } from "../learning.types";
-import useSectionFormValidation from "../hooks/useSectionFormValidation";
 
 interface SectionFormProps {
   isOpen: boolean;
@@ -129,7 +130,7 @@ export default function SectionForm({
             {sectionId ? "ویرایش بخش" : "اضافه کردن بخش"}
           </span>
           <span className="cursor-pointer" onClick={() => onOpenChange()}>
-            <Icon name="close" className="text-secondary-300" />
+            <AppIcon name="CloseCircle" size={20} className="text-secondary-300" />
           </span>
         </ModalHeader>
         <div className="h-[1px] bg-secondary-100 w-[506px] mx-auto mb-[15px]" />
@@ -185,16 +186,13 @@ export default function SectionForm({
             </div>
           </ModalBody>
           <ModalFooter className="px-0">
-            <CustomButton
+            <AppButton
               type="submit"
-              buttonVariant="primary"
-              buttonSize="md"
-              isDisabled={isSubmitting}
-              isLoading={isSubmitting}
-              className="font-semibold text-[14px]/[20px]"
-            >
-              {sectionId ? "ویرایش بخش" : "اضافه کردن بخش"}
-            </CustomButton>
+              color="primary"
+              disabled={isSubmitting}
+              loading={isSubmitting}
+              label={sectionId ? "ویرایش بخش" : "اضافه کردن بخش"}
+            />
           </ModalFooter>
         </form>
       </ModalContent>

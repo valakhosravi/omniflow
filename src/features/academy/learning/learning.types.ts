@@ -20,21 +20,6 @@ export interface CourseDto {
   Seasons: SeasonDto[] | null;
 }
 
-export interface CourseByCategoryDto {
-  CategoryName: string | null;
-  TeacherName: string | null;
-  Seasons: SeasonDto[] | null;
-  CourseId: number;
-  CategoryId: number;
-  TeacherId: number;
-  Title: string | null;
-  Description: string | null;
-  Image: string | null;
-  IsActive: boolean;
-  DurationHours: number;
-  CreatedDate: string;
-}
-
 export interface SeasonDto {
   SeasonId: number;
   Title: string | null;
@@ -51,86 +36,24 @@ export interface SectionDto {
   CreatedDate: string;
 }
 
-export interface CourseInfoMediaFileDto {
-  OriginalFileName: string | null;
-  ObjectKey: string | null;
-  MimeType: string | null;
-  FileSize: number;
-  DurationInSeconds: number | null;
-  Status: number;
-  CreatedDate: string;
-  MediaFileId: string;
-}
-
-export interface CourseInfoSectionMediaDto {
-  SectionMediaId: number;
-  SectionId: number;
-  MediaFileId: string;
-  MediaType: number;
-  OrderNumber: number;
-  MediaFile: CourseInfoMediaFileDto | null;
-}
-
-export interface CourseInfoSectionDto {
-  SectionId: number;
-  Title: string | null;
-  SeasonId: number;
-  CreatedDate: string;
-  SectionMedia: CourseInfoSectionMediaDto[];
-}
-
-export interface CourseInfoSeasonDto {
-  SeasonId: number;
-  Title: string | null;
-  CourseId: number;
-  IsActive: boolean;
-  OrderNumber: number;
-  Sections: CourseInfoSectionDto[];
-}
-
-export interface CourseInfoDto {
-  CategoryName: string | null;
-  TeacherName: string | null;
-  Seasons: CourseInfoSeasonDto[];
-  CourseId: number;
-  CategoryId: number;
-  TeacherId: number;
-  Title: string | null;
-  Description: string | null;
-  Image: string | null;
-  IsActive: boolean;
-  DurationHours: number;
-  CreatedDate: string;
-}
-
-export interface CourseAssignableUserDto {
-  UserId: number;
-  PersonnelId: number;
-  FullName: string;
-  Department: string | null;
-  Title: string | null;
-  IsAssigned: boolean;
-}
-
-export interface GetCourseAssignableUsersRequest {
-  courseId: number;
-  pageNumber: number;
-  pageSize: number;
-  searchTerm?: string;
-  department?: string;
-}
-
-export interface AssignUsersToCourseRequest {
-  CourseId: number;
-  UserIds: number[];
-}
-
 export interface TeacherDto {
   TeacherId: number;
   FullName: string | null;
   Mobile: string | null;
   Avatar: string | null;
   CreatedDate: string;
+}
+
+export interface CreateTeacherRequest {
+  FullName: string;
+  Mobile: string;
+  AvatarFile?: File;
+}
+
+export interface UpdateTeacherRequest {
+  FullName: string;
+  Mobile: string;
+  AvatarFile?: File;
 }
 
 export interface CreateCourseRequest {
@@ -188,23 +111,4 @@ export interface CreateSectionAndUploadFileRequest {
   SeasonId: number;
   Title: string;
   OrderNumber: number;
-}
-
-export interface SectionFormValues {
-  Title: string;
-  OrderNumber: number;
-}
-
-export interface SeasonFormValues {
-  Title: string;
-  OrderNumber: number;
-}
-
-export interface CourseFormValues {
-  Title: string;
-  Description: string;
-  CategoryId: number;
-  TeacherId: number;
-  DurationHours?: number;
-  IsActive: boolean;
 }

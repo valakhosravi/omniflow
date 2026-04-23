@@ -1,4 +1,4 @@
-import SectionsPageComponent from "@/features/academy/learning/components/SectionsPageComponent";
+import SectionsPage from "@/features/academy/learning/components/SectionsPage";
 
 export const metadata = {
   title: "TIKA | لیست بخش‌ها",
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function Page() {
-  return <SectionsPageComponent />;
+  return <SectionsPage />;
 }

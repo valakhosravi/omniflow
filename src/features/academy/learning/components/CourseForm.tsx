@@ -11,9 +11,12 @@ import {
 } from "@/ui/NextUi";
 import AppInput from "@/components/common/AppInput";
 import { AppSelect } from "@/components/common/AppSelect";
+import AppButton from "@/components/common/AppButton/AppButton";
+import { AppIcon } from "@/components/common/AppIcon";
 import { transformToOptions } from "@/ui/RHFSelect";
-import CustomButton from "@/ui/Button";
-import { Icon } from "@/ui/Icon";
+import useCourseFormValidation, {
+  CourseFormValues,
+} from "../validations/useCourseFormValidation";
 import {
   useCreateCourseMutation,
   useUpdateCourseMutation,
@@ -21,8 +24,6 @@ import {
   useGetAllCategoriesQuery,
   useGetAllTeachersQuery,
 } from "../learning.services";
-import { CourseFormValues } from "../learning.types";
-import useCourseFormValidation from "../hooks/useCourseFormValidation";
 
 interface CourseFormProps {
   isOpen: boolean;
@@ -127,7 +128,7 @@ export default function CourseForm({
             {courseId ? "ویرایش دوره" : "اضافه کردن دوره"}
           </span>
           <span className="cursor-pointer" onClick={() => onOpenChange()}>
-            <Icon name="close" className="text-secondary-300" />
+            <AppIcon name="CloseCircle" size={20} className="text-secondary-300" />
           </span>
         </ModalHeader>
         <div className="h-[1px] bg-secondary-100 w-[706px] mx-auto mb-[15px]" />
@@ -239,16 +240,13 @@ export default function CourseForm({
             </div>
           </ModalBody>
           <ModalFooter className="px-0">
-            <CustomButton
+            <AppButton
               type="submit"
-              buttonVariant="primary"
-              buttonSize="md"
-              isDisabled={isCreating || isUpdating}
-              isLoading={isCreating || isUpdating}
-              className="font-semibold text-[14px]/[20px]"
-            >
-              {courseId ? "ویرایش دوره" : "اضافه کردن دوره"}
-            </CustomButton>
+              color="primary"
+              disabled={isCreating || isUpdating}
+              loading={isCreating || isUpdating}
+              label={courseId ? "ویرایش دوره" : "اضافه کردن دوره"}
+            />
           </ModalFooter>
         </form>
       </ModalContent>

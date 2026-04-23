@@ -1,4 +1,4 @@
-import SeasonsPageComponent from "@/features/academy/learning/components/SeasonsPageComponent";
+import SeasonsPage from "@/features/academy/learning/components/SeasonsPage";
 
 export const metadata = {
   title: "TIKA | لیست فصل‌ها",
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function Page() {
-  return <SeasonsPageComponent />;
+  return <SeasonsPage />;
 }
