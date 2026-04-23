@@ -12,14 +12,14 @@ import { RequestDetailItem } from "@/components/common/AppRequestDetails/AppRequ
 export const salaryDeductionDetailsConfig: DetailRow<any>[] = [
   {
     key: "fullName",
-    label: "نام و نام خانوادگی",
+    label: "نام و نام خانوادگی متقاضی",
     icon: "UserTag",
     type: "text",
     value: ({ data }) => data.fullName || "",
   },
   {
     key: "jobPositionName",
-    label: "سمت",
+    label: "سمت شغلی",
     icon: "User",
     type: "text",
     value: ({ data }) => data.jobPositionName || "",
@@ -32,32 +32,65 @@ export const salaryDeductionDetailsConfig: DetailRow<any>[] = [
     value: ({ data }) => data.personnelId || "",
   },
   {
+    key: "nationalCode",
+    label: "کد ملی",
+    icon: "Card",
+    type: "text",
+    value: ({ data }) => data.nationalCode || "-",
+  },
+  {
     key: "receiverOrganizationName",
     label: "سازمان / اداره هدف",
     icon: "Buildings",
     type: "text",
-    value: ({ data }) => data.receiverOrganizationName,
+    value: ({ data }) => data.receiverOrganizationName || "-",
   },
   {
-    key: "forReason",
-    label: "جهت",
+    key: "facilityType",
+    label: "نوع تسهیلات",
     icon: "ArrowRight",
     type: "text",
-    value: ({ data }) => data.forReason || "-",
+    value: ({ data }) => data.facilityType || "-",
   },
   {
-    key: "lang",
-    label: "زبان گواهی اشتغال به کار",
-    icon: "Global",
-    type: "text",
-    value: () => "فارسی",
-  },
-  {
-    key: "trackingCode",
-    label: "کد پیگیری",
-    value: ({ data }) => data.trackingCode || "-",
+    key: "amount",
+    label: "مبلغ تسهیلات",
     icon: "SmsTracking",
     type: "text",
+    value: ({ data }) =>
+      typeof data.amount === "number"
+        ? `${data.amount.toLocaleString("fa-IR")} ریال`
+        : "-",
+  },
+  {
+    key: "installmentAmount",
+    label: "اقساط ماهانه",
+    icon: "SmsTracking",
+    type: "text",
+    value: ({ data }) =>
+      typeof data.installmentAmount === "number"
+        ? `${data.installmentAmount.toLocaleString("fa-IR")} ریال`
+        : "-",
+  },
+  {
+    key: "installmentCount",
+    label: "تعداد اقساط",
+    icon: "SmsTracking",
+    type: "text",
+    value: ({ data }) =>
+      typeof data.installmentCount === "number"
+        ? data.installmentCount.toLocaleString("fa-IR")
+        : "-",
+  },
+  {
+    key: "visibleItems",
+    label: "موارد قابل نمایش در نامه",
+    icon: "DocumentText",
+    type: "text",
+    value: ({ data }) =>
+      Array.isArray(data.visibleItems) && data.visibleItems.length > 0
+        ? data.visibleItems.join(" ، ")
+        : "-",
   },
 ];
 

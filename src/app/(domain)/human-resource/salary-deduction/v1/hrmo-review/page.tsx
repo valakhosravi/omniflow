@@ -1,7 +1,9 @@
-import React from 'react'
+import React from "react";
+import withPermission, { PERMISSION } from "@/HOC/withPermission";
+import SalaryDeductionHrmoReviewPageComponent from "@/features/human-resource/salary-deduction/components/SalaryDeductionHrmoReviewPageComponent";
 
-export default function SalaryDeductionHrmoReviewPage() {
-  return (
-    <div>SalaryDeductionStartPage</div>
-  )
+function SalaryDeductionHrmoReviewPage() {
+  return <SalaryDeductionHrmoReviewPageComponent />;
 }
+
+export default withPermission(SalaryDeductionHrmoReviewPage, PERMISSION.TASK);
