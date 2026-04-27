@@ -10,6 +10,19 @@ type SalaryDeductionPrintData = {
   installmentAmount: string;
 };
 
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function printValue(value: string, fallback: string) {
+  return value ? escapeHtml(value) : fallback;
+}
+
 export function buildSalaryDeductionPrintHtml(data: SalaryDeductionPrintData) {
   return `<!doctype html>
 <html lang="fa" dir="rtl">
@@ -82,13 +95,13 @@ export function buildSalaryDeductionPrintHtml(data: SalaryDeductionPrintData) {
   <body>
     <div class="container">
       <h1>نامه کسر از حقوق / ضمانت</h1>
-      <div class="meta">شماره نامه: ${data.trackingCode || "—"} | تاریخ: ${data.createdDate || "—"}</div>
+      <div class="meta">شماره نامه: ${printValue(data.trackingCode, "—")} | تاریخ: ${printValue(data.createdDate, "—")}</div>
       <div class="content">
-        اینجانب ${data.fullName || "...................."} فرزند ${data.fatherName || "...................."} دارای کد ملی
-        ${data.nationalCode || "...................."} و کد پرسنلی ${data.personnelId || "...................."} در خصوص نامه کسر از حقوق / ضمانت
-        شماره ${data.trackingCode || "...................."} مورخ ${data.createdDate || "...................."} جهت اخذ تسهیلات آقای / خانم
-        ${data.guaranteeFullName || "...................."} به مبلغ ${data.amount || "...................."} ریال با اقساط
-        ${data.installmentAmount || "...................."} ریال اعلام می دارم در صورتی که بنا به هر دلیلی از طریق نامه مکتوب بدهی
+        اینجانب ${printValue(data.fullName, "....................")} فرزند ${printValue(data.fatherName, "....................")} دارای کد ملی
+        ${printValue(data.nationalCode, "....................")} و کد پرسنلی ${printValue(data.personnelId, "....................")} در خصوص نامه کسر از حقوق / ضمانت
+        شماره ${printValue(data.trackingCode, "....................")} مورخ ${printValue(data.createdDate, "....................")} جهت اخذ تسهیلات آقای / خانم
+        ${printValue(data.guaranteeFullName, "....................")} به مبلغ ${printValue(data.amount, "....................")} ریال با اقساط
+        ${printValue(data.installmentAmount, "....................")} ریال اعلام می دارم در صورتی که بنا به هر دلیلی از طریق نامه مکتوب بدهی
         اینجانب یا وام گیرنده از ناحیه مراجع قضایی در اجرای ماده 96 قانون اجرای احکام و ماده 83 آئین نامه اجرای مفاد اسناد رسمی و یا بانک ها
         و سایر موسسات به شرکت تجارت الکترونیک پارسیان اعلام گردد، شرکت مذکور مجاز است رأساً نسبت به کسر میزان بدهی اعلامی از حقوق و مزایای
         اینجانب و واریز به حساب تعیین شده اقدام نماید. لذا اینجانب ضمن پذیرش کلیه شرایط فوق الذکر و اطلاع کامل از نحوه صدور گواهی کسر از حقوق،
