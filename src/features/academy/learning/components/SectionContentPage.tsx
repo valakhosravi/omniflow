@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import AppBreadcrumb from "@/components/common/AppBreadcrumb/AppBreadcrumb";
 import { BreadcrumbsItem } from "@/components/common/AppBreadcrumb/appBreadcrumb.types";
@@ -137,12 +137,6 @@ export default function SectionContentPage() {
     videoDuration > 0 ? Math.min(100, (watchedSeconds / videoDuration) * 100) : 0;
   const progressStorageKey = `learning-video-progress-${sectionId}`;
 
-  useEffect(() => {
-    setVideoDuration(0);
-    setWatchedSeconds(0);
-    lastSavedSecondRef.current = 0;
-  }, [sectionId]);
-
   const handleSubmitComment = (e: FormEvent) => {
     e.preventDefault();
     const text = newComment.trim();
@@ -169,6 +163,9 @@ export default function SectionContentPage() {
     if (!video) return;
 
     setVideoDuration(video.duration || 0);
+    setWatchedSeconds(0);
+    lastSavedSecondRef.current = 0;
+
     const savedProgress = Number(localStorage.getItem(progressStorageKey) ?? 0);
     if (savedProgress > 0) {
       const resumeTime = Math.min(savedProgress, Math.max(0, (video.duration || 0) - 1));
