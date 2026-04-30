@@ -14,7 +14,7 @@ import AppButton from "@/components/common/AppButton/AppButton";
 import { AppIcon } from "@/components/common/AppIcon";
 import useTeacherFormValidation, {
   TeacherFormValues,
-} from "../validations/useTeacherFormValidation";
+} from "../hooks/useTeacherFormValidation";
 import {
   useCreateTeacherMutation,
   useGetTeacherByIdQuery,
