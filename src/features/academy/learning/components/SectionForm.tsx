@@ -17,7 +17,7 @@ import { FileType } from "@/components/common/AppFile/AppFile.types";
 import { FeatureNamesEnum } from "@/components/common/AppFile/AppFile.const";
 import useSectionFormValidation, {
   SectionFormValues,
-} from "../validations/useSectionFormValidation";
+} from "../hooks/useSectionFormValidation";
 import {
   useCreateSectionMutation,
   useCreateSectionAndUploadFileMutation,
