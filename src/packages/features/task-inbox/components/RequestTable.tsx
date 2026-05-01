@@ -159,7 +159,7 @@ export default function RequestTable() {
             return;
           } else if (processName === "SalaryDeduction") {
             router.push(
-              `/human-resource/${pascalToKebab(processName)}/V${version}/follow-up?${searchParams.toString()}`,
+              `/human-resource/${pascalToKebab(processName)}/v1/follow-up?${searchParams.toString()}`,
             );
           } else {
             router.push(
