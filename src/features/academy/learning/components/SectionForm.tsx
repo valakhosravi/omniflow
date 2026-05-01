@@ -17,7 +17,7 @@ import { FileType } from "@/components/common/AppFile/AppFile.types";
 import { FeatureNamesEnum } from "@/components/common/AppFile/AppFile.const";
 import useSectionFormValidation, {
   SectionFormValues,
-} from "../validations/useSectionFormValidation";
+} from "../hooks/useSectionFormValidation";
 import {
   useCreateSectionMutation,
   useCreateSectionAndUploadFileMutation,
@@ -62,7 +62,7 @@ export default function SectionForm({
     if (sectionId && sectionData?.Data) {
       const d = sectionData.Data;
       setValue("Title", d.Title ?? "");
-      setValue("OrderNumber", 1);
+      setValue("OrderNumber", d.OrderNumber);
     } else {
       reset();
     }
