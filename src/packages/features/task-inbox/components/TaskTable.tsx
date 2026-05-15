@@ -224,8 +224,9 @@ export default function TaskTable({ type }: TaskTableProps) {
               `/invoice/payment/v1/${formName}?${searchParams.toString()}`,
             );
           } else if (processName === "SalaryDeduction") {
+            const targetFormName = formName || "follow-up";
             router.push(
-              `/human-resource/${pascalToKebab(processName)}/v1/follow-up?${searchParams.toString()}`,
+              `/human-resource/${pascalToKebab(processName)}/v${version}/${targetFormName}?${searchParams.toString()}`,
             );
           } else {
             router.push(
