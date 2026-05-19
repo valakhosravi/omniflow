@@ -16,7 +16,7 @@ import { AppIcon } from "@/components/common/AppIcon";
 import { transformToOptions } from "@/ui/RHFSelect";
 import useCourseFormValidation, {
   CourseFormValues,
-} from "../validations/useCourseFormValidation";
+} from "../hooks/useCourseFormValidation";
 import {
   useCreateCourseMutation,
   useUpdateCourseMutation,

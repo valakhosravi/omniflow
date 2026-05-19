@@ -8,18 +8,20 @@ import type { RequestDto } from "../salary-deduction.types";
 interface salaryDeductionFollowUpDetailsProps {
   data?: { Data?: RequestDto };
   isLoading: boolean;
+  personnelId?: string;
 }
 
 export default function salaryDeductionFollowUpDetails({
   data,
   isLoading,
+  personnelId,
 }: salaryDeductionFollowUpDetailsProps) {
   const request = data?.Data;
 
   const detailsData = {
     fullName: request?.FullName || "",
     jobPositionName: request?.JobPosition || request?.Title || "",
-    personnelId: request?.ProcessRequestId ? String(request.ProcessRequestId) : "",
+    personnelId: personnelId || "",
     nationalCode: request?.NationalCode || "",
     receiverOrganizationName: request?.BankName || "",
     facilityType: request?.IsGuarantee ? "ضمانت" : "تسهیلات عادی",
