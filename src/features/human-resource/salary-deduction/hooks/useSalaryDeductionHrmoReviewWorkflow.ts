@@ -177,7 +177,7 @@ export const useSalaryDeductionHrmoReviewWorkflow =
         trackingCode: base.trackingCode,
         createdDate: request?.CreatedDate || "",
       };
-    }, [requestResult?.Data, base.trackingCode]);
+    }, [requestResult?.Data, base.requestData?.Data, base.trackingCode]);
 
     const actions: ActionButton[] = [
       {
