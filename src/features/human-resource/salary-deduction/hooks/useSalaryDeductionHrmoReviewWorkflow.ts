@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useCallback, useMemo, useRef } from "react";
@@ -63,10 +62,10 @@ export const useSalaryDeductionHrmoReviewWorkflow =
       [taskData],
     );
 
-    const isTaskApproved = useMemo(
-      () => base.requestData?.Data?.StatusCode !== 102,
-      [base.requestData],
-    );
+    const isTaskApproved = useMemo(() => {
+      const statusCode = base.requestData?.Data?.StatusCode;
+      return statusCode ? ![102, 103, 104, 108].includes(statusCode) : true;
+    }, [base.requestData]);
 
     const { completeTask, claimTask, isClaimingTask, isCompletingTask } =
       useTaskCompletion({
@@ -131,7 +130,9 @@ export const useSalaryDeductionHrmoReviewWorkflow =
         personnelId: String(base.requestData?.Data?.PersonnelId || ""),
         trackingCode: base.trackingCode || "",
         createdDate: toPersianDateOnly(request.CreatedDate),
-        guaranteeFullName: request.GuaranteedFullName || "",
+        guaranteeFullName: request.IsGuarantee
+          ? request.GuaranteedFullName || ""
+          : request.FullName || "",
         amount: Number(request.Amount || 0).toLocaleString("fa-IR"),
         installmentAmount: Number(request.InstallmentAmount || 0).toLocaleString(
           "fa-IR",
@@ -177,7 +178,11 @@ export const useSalaryDeductionHrmoReviewWorkflow =
         trackingCode: base.trackingCode,
         createdDate: request?.CreatedDate || "",
       };
-    }, [requestResult?.Data, base.trackingCode]);
+    }, [
+      requestResult?.Data,
+      base.trackingCode,
+      base.requestData?.Data?.PersonnelId,
+    ]);
 
     const actions: ActionButton[] = [
       {
