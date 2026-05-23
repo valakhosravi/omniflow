@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import AppBreadcrumb from "@/components/common/AppBreadcrumb/AppBreadcrumb";
 import { BreadcrumbsItem } from "@/components/common/AppBreadcrumb/appBreadcrumb.types";
@@ -86,7 +87,12 @@ export default function LearningCourseSeasonsPage() {
                         key={section.SectionId}
                         className="rounded-lg border border-secondary-100 bg-secondary-50 px-3 py-2 text-sm/[20px] text-secondary-800"
                       >
-                        {section.Title ?? "بدون عنوان"}
+                        <Link
+                          className="block hover:text-primary-600"
+                          href={`/academy/learning/courses/${courseId}/seasons/${season.SeasonId}/sections/${section.SectionId}`}
+                        >
+                          {section.Title ?? "بدون عنوان"}
+                        </Link>
                       </li>
                     ))}
                   </ul>

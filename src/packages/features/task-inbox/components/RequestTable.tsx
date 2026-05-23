@@ -8,7 +8,6 @@ import TableTaskInbox from "./TableTaskInbox";
 import StatusBadge from "./StatusBadge";
 import { useRouter } from "next/navigation";
 import { toLocalDateTimeShort } from "@/utils/dateFormatter";
-import pascalToKebab from "@/utils/pascalToSnake";
 
 export default function RequestTable() {
   const router = useRouter();
@@ -159,8 +158,9 @@ export default function RequestTable() {
             return;
           } else if (processName === "SalaryDeduction") {
             router.push(
-              `/human-resource/${pascalToKebab(processName)}/V${version}/follow-up?${searchParams.toString()}`,
+              `/human-resource/salary-deduction/v1/follow-up?${searchParams.toString()}`,
             );
+            return;
           } else {
             router.push(
               `/task-inbox/${processName}/V${version}/follow-up/${id}`,

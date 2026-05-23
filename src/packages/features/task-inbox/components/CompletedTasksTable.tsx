@@ -6,7 +6,6 @@ import { CompletedTask } from "@/models/camunda-process/GetCompletedTasks";
 import TableTaskInbox from "./TableTaskInbox";
 import { useRouter } from "next/navigation";
 import { toLocalDateTimeShort } from "@/utils/dateFormatter";
-import pascalToKebab from "@/utils/pascalToSnake";
 
 export default function CompletedTasksTable() {
   const router = useRouter();
@@ -122,10 +121,12 @@ export default function CompletedTasksTable() {
 
           if (processName === "Bug") {
             router.push(`/support/bug/v1/follow-up?${searchParams.toString()}`);
+            return;
           } else if (processName === "EmploymentCertificate") {
             router.push(
               `/human-resource/employment-certificate/v1/follow-up?${searchParams.toString()}`,
             );
+            return;
           } else if (processName === "Report") {
             router.push(`/Report/BI/v1/follow-up?${searchParams.toString()}`);
             return;
@@ -143,18 +144,18 @@ export default function CompletedTasksTable() {
             router.push(
               `/invoice/payment/v1/follow-up?${searchParams.toString()}`,
             );
-          } else if (processName === "SalaryDedution") {
+            return;
+          } else if (processName === "SalaryDeduction") {
             router.push(
-              `/${pascalToKebab(processName)}/V${version}/follow-up?${searchParams.toString()}`,
+              `/human-resource/salary-deduction/v1/follow-up?${searchParams.toString()}`,
             );
+            return;
           } else {
             router.push(
               `/task-inbox/${processName}/V${version}/follow-up/${id}`,
             );
+            return;
           }
-          router.push(
-            `/task-inbox/${processName}/V${version}/follow-up/${id}`,
-          );
         }}
         headers={headers}
         isLoading={isLoading}
