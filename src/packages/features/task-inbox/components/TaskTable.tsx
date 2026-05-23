@@ -21,7 +21,6 @@ import {
   useUpdateIsReadMutation,
 } from "../api/ReadApi";
 import { GetUnRead } from "../types/UnReadTasks";
-import pascalToKebab from "@/utils/pascalToSnake";
 
 interface TaskTableProps {
   type: TaskFilter;
@@ -225,8 +224,9 @@ export default function TaskTable({ type }: TaskTableProps) {
             );
           } else if (processName === "SalaryDeduction") {
             router.push(
-              `/human-resource/${pascalToKebab(processName)}/v1/follow-up?${searchParams.toString()}`,
+              `/human-resource/salary-deduction/v1/${formName}?${searchParams.toString()}`,
             );
+            return;
           } else {
             router.push(
               `/task-inbox/${processName}/v${version}/${formName}/${id}?${searchParams.toString()}`,
