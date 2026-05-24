@@ -122,10 +122,12 @@ export default function CompletedTasksTable() {
 
           if (processName === "Bug") {
             router.push(`/support/bug/v1/follow-up?${searchParams.toString()}`);
+            return;
           } else if (processName === "EmploymentCertificate") {
             router.push(
               `/human-resource/employment-certificate/v1/follow-up?${searchParams.toString()}`,
             );
+            return;
           } else if (processName === "Report") {
             router.push(`/Report/BI/v1/follow-up?${searchParams.toString()}`);
             return;
@@ -143,18 +145,18 @@ export default function CompletedTasksTable() {
             router.push(
               `/invoice/payment/v1/follow-up?${searchParams.toString()}`,
             );
-          } else if (processName === "SalaryDedution") {
+            return;
+          } else if (processName === "SalaryDeduction") {
             router.push(
-              `/${pascalToKebab(processName)}/V${version}/follow-up?${searchParams.toString()}`,
+              `/human-resource/${pascalToKebab(processName)}/v1/follow-up?${searchParams.toString()}`,
             );
+            return;
           } else {
             router.push(
               `/task-inbox/${processName}/V${version}/follow-up/${id}`,
             );
+            return;
           }
-          router.push(
-            `/task-inbox/${processName}/V${version}/follow-up/${id}`,
-          );
         }}
         headers={headers}
         isLoading={isLoading}
