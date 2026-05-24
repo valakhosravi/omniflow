@@ -223,10 +223,12 @@ export default function TaskTable({ type }: TaskTableProps) {
             router.push(
               `/invoice/payment/v1/${formName}?${searchParams.toString()}`,
             );
+            return;
           } else if (processName === "SalaryDeduction") {
             router.push(
-              `/human-resource/${pascalToKebab(processName)}/v1/follow-up?${searchParams.toString()}`,
+              `/human-resource/${pascalToKebab(processName)}/v1/${formName}?${searchParams.toString()}`,
             );
+            return;
           } else {
             router.push(
               `/task-inbox/${processName}/v${version}/${formName}/${id}?${searchParams.toString()}`,
