@@ -47,7 +47,7 @@ export const salaryDeductionApi = createApi({
           "X-Tracking-Code": trackingCode,
           "X-Process-Name": processName,
         },
-        params: { requestId },
+        params: { processRequestId: requestId },
       }),
       providesTags: ["Request"],
     }),
