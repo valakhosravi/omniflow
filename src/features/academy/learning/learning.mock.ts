@@ -80,7 +80,7 @@ function generateSeason(courseId: number, order: number): SeasonDto {
     CourseId: courseId,
     IsActive: true,
     OrderNumber: order,
-    Sections: Array.from({ length: sectionCount }, (_, i) =>
+    Sections: Array.from({ length: sectionCount }, () =>
       generateSection(seasonId),
     ),
   };
