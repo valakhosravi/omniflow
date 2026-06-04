@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import AppBreadcrumb from "@/components/common/AppBreadcrumb/AppBreadcrumb";
 import { BreadcrumbsItem } from "@/components/common/AppBreadcrumb/appBreadcrumb.types";
@@ -18,6 +18,12 @@ type SectionComment = {
   id: number;
   text: string;
   createdAt: string;
+};
+
+type VideoProgress = {
+  sectionId: number;
+  videoDuration: number;
+  watchedSeconds: number;
 };
 
 function getSectionMedia(sectionData: unknown): {
@@ -125,23 +131,25 @@ export default function SectionContentPage() {
 
   const [comments, setComments] = useState<SectionComment[]>([]);
   const [newComment, setNewComment] = useState("");
-  const [videoDuration, setVideoDuration] = useState(0);
-  const [watchedSeconds, setWatchedSeconds] = useState(0);
+  const [videoProgress, setVideoProgress] = useState<VideoProgress>({
+    sectionId: 0,
+    videoDuration: 0,
+    watchedSeconds: 0,
+  });
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const lastSavedSecondRef = useRef(0);
 
   const { url: mediaUrl, mimeType } = getSectionMedia(sectionData?.Data);
   const showPdf = isPdf(mediaUrl, mimeType);
   const showVideo = isVideo(mediaUrl, mimeType);
+  const activeVideoProgress =
+    videoProgress.sectionId === sectionId
+      ? videoProgress
+      : { sectionId, videoDuration: 0, watchedSeconds: 0 };
+  const { videoDuration, watchedSeconds } = activeVideoProgress;
   const progressPercent =
     videoDuration > 0 ? Math.min(100, (watchedSeconds / videoDuration) * 100) : 0;
   const progressStorageKey = `learning-video-progress-${sectionId}`;
-
-  useEffect(() => {
-    setVideoDuration(0);
-    setWatchedSeconds(0);
-    lastSavedSecondRef.current = 0;
-  }, [sectionId]);
 
   const handleSubmitComment = (e: FormEvent) => {
     e.preventDefault();
@@ -168,21 +176,27 @@ export default function SectionContentPage() {
     const video = videoRef.current;
     if (!video) return;
 
-    setVideoDuration(video.duration || 0);
+    const duration = video.duration || 0;
     const savedProgress = Number(localStorage.getItem(progressStorageKey) ?? 0);
+    let watched = 0;
+    lastSavedSecondRef.current = 0;
     if (savedProgress > 0) {
-      const resumeTime = Math.min(savedProgress, Math.max(0, (video.duration || 0) - 1));
-      video.currentTime = resumeTime;
-      setWatchedSeconds(resumeTime);
-      lastSavedSecondRef.current = Math.floor(resumeTime);
+      watched = Math.min(savedProgress, Math.max(0, duration - 1));
+      video.currentTime = watched;
+      lastSavedSecondRef.current = Math.floor(watched);
     }
+    setVideoProgress({ sectionId, videoDuration: duration, watchedSeconds: watched });
   };
 
   const handleVideoTimeUpdate = () => {
     const video = videoRef.current;
     if (!video) return;
     const currentSecond = Math.floor(video.currentTime);
-    setWatchedSeconds(video.currentTime);
+    setVideoProgress({
+      sectionId,
+      videoDuration: video.duration || videoDuration,
+      watchedSeconds: video.currentTime,
+    });
 
     if (currentSecond !== lastSavedSecondRef.current) {
       localStorage.setItem(progressStorageKey, String(currentSecond));
