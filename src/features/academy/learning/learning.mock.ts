@@ -62,7 +62,7 @@ let _sectionId = 100;
 
 // ─── Generators ───────────────────────────────────────────────────────────────
 
-function generateSection(seasonId: number, _order: number): SectionDto {
+function generateSection(seasonId: number): SectionDto {
   return {
     SectionId: _sectionId++,
     Title: faker.lorem.sentence({ min: 2, max: 5 }),
@@ -80,9 +80,7 @@ function generateSeason(courseId: number, order: number): SeasonDto {
     CourseId: courseId,
     IsActive: true,
     OrderNumber: order,
-    Sections: Array.from({ length: sectionCount }, (_, i) =>
-      generateSection(seasonId, i + 1),
-    ),
+    Sections: Array.from({ length: sectionCount }, () => generateSection(seasonId)),
   };
 }
 
