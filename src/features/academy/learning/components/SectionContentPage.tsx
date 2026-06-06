@@ -138,9 +138,11 @@ export default function SectionContentPage() {
   const progressStorageKey = `learning-video-progress-${sectionId}`;
 
   useEffect(() => {
-    setVideoDuration(0);
-    setWatchedSeconds(0);
     lastSavedSecondRef.current = 0;
+    queueMicrotask(() => {
+      setVideoDuration(0);
+      setWatchedSeconds(0);
+    });
   }, [sectionId]);
 
   const handleSubmitComment = (e: FormEvent) => {

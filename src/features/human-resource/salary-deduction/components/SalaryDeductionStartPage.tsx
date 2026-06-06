@@ -78,20 +78,23 @@ export default function SalaryDeductionStartPageComponent() {
         console.error(error);
       }
     }
-  }, [processByNameAndVersion, form]);
+  }, [processByNameAndVersion, form, router, startProcessWithPayload]);
 
   useEffect(() => {
     if (userDetail?.UserDetail) {
-      setForm((prev) => ({
-        ...prev,
-        firstName: userDetail.UserDetail.FirstName,
-        lastName: userDetail.UserDetail.LastName,
-        fatherName: userDetail.UserDetail.FatherName,
-        nationalCode: userDetail.UserDetail.NationalCode,
-        phoneNumber: userDetail.UserDetail.Mobile,
-        jobPosition: userDetail.UserDetail?.Title || "",
-        employmentDate: userDetail.UserDetail.EmploymentDate || "",
-      }));
+      const details = userDetail.UserDetail;
+      queueMicrotask(() => {
+        setForm((prev) => ({
+          ...prev,
+          firstName: details.FirstName,
+          lastName: details.LastName,
+          fatherName: details.FatherName,
+          nationalCode: details.NationalCode,
+          phoneNumber: details.Mobile,
+          jobPosition: details.Title || "",
+          employmentDate: details.EmploymentDate || "",
+        }));
+      });
     }
   }, [userDetail]);
 
