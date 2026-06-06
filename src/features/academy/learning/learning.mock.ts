@@ -401,6 +401,7 @@ export async function mockCreateSection(
     SectionId: _sectionId++,
     Title: body.Title,
     SeasonId: body.SeasonId,
+    OrderNumber: body.OrderNumber,
     CreatedDate: new Date().toISOString(),
   };
   if (!season.Sections) season.Sections = [];
@@ -417,6 +418,7 @@ export async function mockUpdateSection(
   if (!section) return notFound("بخش مورد نظر یافت نشد");
   section.Title = body.Title;
   section.SeasonId = body.SeasonId;
+  section.OrderNumber = body.OrderNumber;
   return ok(section);
 }
 
@@ -447,6 +449,7 @@ export async function mockCreateSectionAndUploadFile(
     SectionId: _sectionId++,
     Title: data.Title,
     SeasonId: data.SeasonId,
+    OrderNumber: data.OrderNumber,
     CreatedDate: new Date().toISOString(),
   };
   if (!season.Sections) season.Sections = [];
