@@ -8,7 +8,7 @@ import useGetLastProcessByName from "@/hooks/process/useGetLastProcessByName";
 import { useAuth } from "@/packages/auth/hooks/useAuth";
 import { useCamunda } from "@/packages/camunda";
 import { toPersianDateOnly } from "@/utils/dateFormatter";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useGetBanksQuery } from "../salary-deduction.services";
 import { addToaster } from "@/ui/Toaster";
 import { useRouter } from "next/navigation";
@@ -20,15 +20,19 @@ export default function SalaryDeductionStartPageComponent() {
   const { startProcessWithPayload, isStartingProcess } = useCamunda();
 
   const { userDetail } = useAuth();
+  const employee = userDetail?.UserDetail;
+  const employeeFirstName = employee?.FirstName || "";
+  const employeeLastName = employee?.LastName || "";
+  const employeeFatherName = employee?.FatherName || "";
+  const employeeNationalCode = employee?.NationalCode || "";
+  const employeeMobileNumber = employee?.Mobile || "";
+  const employeeJobPosition = employee?.Title || "";
+  const employeeEmploymentDate = employee?.EmploymentDate || "";
+  const formattedEmployeeEmploymentDate = employeeEmploymentDate
+    ? new Date(employeeEmploymentDate).toLocaleDateString("fa-IR")
+    : "";
 
   const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    fatherName: "",
-    nationalCode: "",
-    phoneNumber: "",
-    jobPosition: "",
-    employmentDate: "",
     bankId: "",
     amount: "",
     installmentCount: "",
@@ -38,7 +42,6 @@ export default function SalaryDeductionStartPageComponent() {
     hasJobPosition: false,
     hasPhoneNumber: false,
     hasEmploymentDate: false,
-    isGuarantee: false,
   });
 
   const { data: bankOptions } = useGetBanksQuery();
@@ -49,24 +52,29 @@ export default function SalaryDeductionStartPageComponent() {
   const handleStart = useCallback(async () => {
     if (processByNameAndVersion?.Data?.DefinitionId) {
       try {
+        const guaranteeNationalCode = form.guaranteeNationalCode.trim();
+        const guaranteeFullName = form.guaranteeFullName.trim();
+
         await startProcessWithPayload(
           processByNameAndVersion.Data.DefinitionId,
           {
-            EmployeeMobileNumber: form.phoneNumber,
-            JobPosition: form.jobPosition,
-            EmploymentDate: toPersianDateOnly(form.employmentDate),
+            EmployeeMobileNumber: employeeMobileNumber,
+            JobPosition: employeeJobPosition,
+            EmploymentDate: employeeEmploymentDate
+              ? toPersianDateOnly(employeeEmploymentDate)
+              : "",
             BankId: Number(form.bankId),
             Amount: Number(form.amount.replaceAll(",", "")),
             InstallmentCount: Number(form.installmentCount.replaceAll(",", "")),
             InstallmentAmount: Number(
               form.installmentAmount.replaceAll(",", ""),
             ),
-            GuaranteedNationalCode: form.guaranteeNationalCode,
-            GuaranteedFullName: form.guaranteeFullName,
+            GuaranteedNationalCode: guaranteeNationalCode,
+            GuaranteedFullName: guaranteeFullName,
             HasJobPosition: form.hasJobPosition,
             HasPhoneNumber: form.hasPhoneNumber,
             HasEmploymentStartDate: form.hasEmploymentDate,
-            IsGuarantee: form.isGuarantee,
+            IsGuarantee: Boolean(guaranteeNationalCode || guaranteeFullName),
           },
         );
         router.push("/task-inbox/requests");
@@ -78,22 +86,15 @@ export default function SalaryDeductionStartPageComponent() {
         console.error(error);
       }
     }
-  }, [processByNameAndVersion, form]);
-
-  useEffect(() => {
-    if (userDetail?.UserDetail) {
-      setForm((prev) => ({
-        ...prev,
-        firstName: userDetail.UserDetail.FirstName,
-        lastName: userDetail.UserDetail.LastName,
-        fatherName: userDetail.UserDetail.FatherName,
-        nationalCode: userDetail.UserDetail.NationalCode,
-        phoneNumber: userDetail.UserDetail.Mobile,
-        jobPosition: userDetail.UserDetail?.Title || "",
-        employmentDate: userDetail.UserDetail.EmploymentDate || "",
-      }));
-    }
-  }, [userDetail]);
+  }, [
+    processByNameAndVersion,
+    form,
+    router,
+    startProcessWithPayload,
+    employeeEmploymentDate,
+    employeeJobPosition,
+    employeeMobileNumber,
+  ]);
 
   return (
     <div className="w-full py-10 flex justify-center bg-gray-50">
@@ -108,16 +109,16 @@ export default function SalaryDeductionStartPageComponent() {
           <h2 className="font-semibold mb-4">مشخصات متقاضی</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <AppInput label="نام" value={form.firstName} readOnly />
-            <AppInput label="نام خانوادگی" value={form.lastName} readOnly />
-            <AppInput label="نام پدر" value={form.fatherName} readOnly />
+            <AppInput label="نام" value={employeeFirstName} readOnly />
+            <AppInput label="نام خانوادگی" value={employeeLastName} readOnly />
+            <AppInput label="نام پدر" value={employeeFatherName} readOnly />
 
-            <AppInput label="کد ملی" value={form.nationalCode} readOnly />
-            <AppInput label="شماره تماس" value={form.phoneNumber} readOnly />
-            <AppInput label="سمت شغلی" value={form.jobPosition} readOnly />
+            <AppInput label="کد ملی" value={employeeNationalCode} readOnly />
+            <AppInput label="شماره تماس" value={employeeMobileNumber} readOnly />
+            <AppInput label="سمت شغلی" value={employeeJobPosition} readOnly />
             <AppInput
               label="تاریخ استخدام"
-              value={new Date(form.employmentDate).toLocaleDateString("fa-IR")}
+              value={formattedEmployeeEmploymentDate}
               readOnly
             />
           </div>

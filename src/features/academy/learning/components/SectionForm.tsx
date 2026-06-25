@@ -62,7 +62,7 @@ export default function SectionForm({
     if (sectionId && sectionData?.Data) {
       const d = sectionData.Data;
       setValue("Title", d.Title ?? "");
-      setValue("OrderNumber", 1);
+      setValue("OrderNumber", d.OrderNumber);
     } else {
       reset();
     }
