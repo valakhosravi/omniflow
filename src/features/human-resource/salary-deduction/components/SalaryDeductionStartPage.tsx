@@ -38,7 +38,6 @@ export default function SalaryDeductionStartPageComponent() {
     hasJobPosition: false,
     hasPhoneNumber: false,
     hasEmploymentDate: false,
-    isGuarantee: false,
   });
 
   const { data: bankOptions } = useGetBanksQuery();
@@ -49,6 +48,9 @@ export default function SalaryDeductionStartPageComponent() {
   const handleStart = useCallback(async () => {
     if (processByNameAndVersion?.Data?.DefinitionId) {
       try {
+        const guaranteeNationalCode = form.guaranteeNationalCode.trim();
+        const guaranteeFullName = form.guaranteeFullName.trim();
+
         await startProcessWithPayload(
           processByNameAndVersion.Data.DefinitionId,
           {
@@ -61,12 +63,12 @@ export default function SalaryDeductionStartPageComponent() {
             InstallmentAmount: Number(
               form.installmentAmount.replaceAll(",", ""),
             ),
-            GuaranteedNationalCode: form.guaranteeNationalCode,
-            GuaranteedFullName: form.guaranteeFullName,
+            GuaranteedNationalCode: guaranteeNationalCode,
+            GuaranteedFullName: guaranteeFullName,
             HasJobPosition: form.hasJobPosition,
             HasPhoneNumber: form.hasPhoneNumber,
             HasEmploymentStartDate: form.hasEmploymentDate,
-            IsGuarantee: form.isGuarantee,
+            IsGuarantee: Boolean(guaranteeNationalCode || guaranteeFullName),
           },
         );
         router.push("/task-inbox/requests");
@@ -78,7 +80,7 @@ export default function SalaryDeductionStartPageComponent() {
         console.error(error);
       }
     }
-  }, [processByNameAndVersion, form]);
+  }, [processByNameAndVersion, form, router, startProcessWithPayload]);
 
   useEffect(() => {
     if (userDetail?.UserDetail) {

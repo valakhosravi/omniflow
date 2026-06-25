@@ -10,7 +10,32 @@ type SalaryDeductionPrintData = {
   installmentAmount: string;
 };
 
+function escapeHtml(value: string, fallback: string) {
+  const text = value || fallback;
+
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export function buildSalaryDeductionPrintHtml(data: SalaryDeductionPrintData) {
+  const safe = {
+    fullName: escapeHtml(data.fullName, "...................."),
+    fatherName: escapeHtml(data.fatherName, "...................."),
+    nationalCode: escapeHtml(data.nationalCode, "...................."),
+    personnelId: escapeHtml(data.personnelId, "...................."),
+    trackingCode: escapeHtml(data.trackingCode, "...................."),
+    createdDate: escapeHtml(data.createdDate, "...................."),
+    guaranteeFullName: escapeHtml(data.guaranteeFullName, "...................."),
+    amount: escapeHtml(data.amount, "...................."),
+    installmentAmount: escapeHtml(data.installmentAmount, "...................."),
+    metaTrackingCode: escapeHtml(data.trackingCode, "—"),
+    metaCreatedDate: escapeHtml(data.createdDate, "—"),
+  };
+
   return `<!doctype html>
 <html lang="fa" dir="rtl">
   <head>
@@ -82,13 +107,13 @@ export function buildSalaryDeductionPrintHtml(data: SalaryDeductionPrintData) {
   <body>
     <div class="container">
       <h1>نامه کسر از حقوق / ضمانت</h1>
-      <div class="meta">شماره نامه: ${data.trackingCode || "—"} | تاریخ: ${data.createdDate || "—"}</div>
+      <div class="meta">شماره نامه: ${safe.metaTrackingCode} | تاریخ: ${safe.metaCreatedDate}</div>
       <div class="content">
-        اینجانب ${data.fullName || "...................."} فرزند ${data.fatherName || "...................."} دارای کد ملی
-        ${data.nationalCode || "...................."} و کد پرسنلی ${data.personnelId || "...................."} در خصوص نامه کسر از حقوق / ضمانت
-        شماره ${data.trackingCode || "...................."} مورخ ${data.createdDate || "...................."} جهت اخذ تسهیلات آقای / خانم
-        ${data.guaranteeFullName || "...................."} به مبلغ ${data.amount || "...................."} ریال با اقساط
-        ${data.installmentAmount || "...................."} ریال اعلام می دارم در صورتی که بنا به هر دلیلی از طریق نامه مکتوب بدهی
+        اینجانب ${safe.fullName} فرزند ${safe.fatherName} دارای کد ملی
+        ${safe.nationalCode} و کد پرسنلی ${safe.personnelId} در خصوص نامه کسر از حقوق / ضمانت
+        شماره ${safe.trackingCode} مورخ ${safe.createdDate} جهت اخذ تسهیلات آقای / خانم
+        ${safe.guaranteeFullName} به مبلغ ${safe.amount} ریال با اقساط
+        ${safe.installmentAmount} ریال اعلام می دارم در صورتی که بنا به هر دلیلی از طریق نامه مکتوب بدهی
         اینجانب یا وام گیرنده از ناحیه مراجع قضایی در اجرای ماده 96 قانون اجرای احکام و ماده 83 آئین نامه اجرای مفاد اسناد رسمی و یا بانک ها
         و سایر موسسات به شرکت تجارت الکترونیک پارسیان اعلام گردد، شرکت مذکور مجاز است رأساً نسبت به کسر میزان بدهی اعلامی از حقوق و مزایای
         اینجانب و واریز به حساب تعیین شده اقدام نماید. لذا اینجانب ضمن پذیرش کلیه شرایط فوق الذکر و اطلاع کامل از نحوه صدور گواهی کسر از حقوق،
