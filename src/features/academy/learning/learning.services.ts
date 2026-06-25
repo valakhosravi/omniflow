@@ -482,8 +482,6 @@ export const learningApi = createApi({
     }),
   }),
 });
-/* eslint-enable @typescript-eslint/no-explicit-any */
-
 export const {
   // Category
   useGetAllCategoriesQuery,
