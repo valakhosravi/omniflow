@@ -62,12 +62,13 @@ let _sectionId = 100;
 
 // ─── Generators ───────────────────────────────────────────────────────────────
 
-function generateSection(seasonId: number, _order: number): SectionDto {
+function generateSection(seasonId: number, order: number): SectionDto {
   return {
     SectionId: _sectionId++,
     Title: faker.lorem.sentence({ min: 2, max: 5 }),
     SeasonId: seasonId,
     CreatedDate: faker.date.past({ years: 1 }).toISOString(),
+    OrderNumber: order,
   };
 }
 
@@ -401,6 +402,7 @@ export async function mockCreateSection(
     Title: body.Title,
     SeasonId: body.SeasonId,
     CreatedDate: new Date().toISOString(),
+    OrderNumber: body.OrderNumber,
   };
   if (!season.Sections) season.Sections = [];
   season.Sections.push(newSection);
@@ -416,6 +418,7 @@ export async function mockUpdateSection(
   if (!section) return notFound("بخش مورد نظر یافت نشد");
   section.Title = body.Title;
   section.SeasonId = body.SeasonId;
+  section.OrderNumber = body.OrderNumber;
   return ok(section);
 }
 
@@ -447,6 +450,7 @@ export async function mockCreateSectionAndUploadFile(
     Title: data.Title,
     SeasonId: data.SeasonId,
     CreatedDate: new Date().toISOString(),
+    OrderNumber: data.OrderNumber,
   };
   if (!season.Sections) season.Sections = [];
   season.Sections.push(newSection);
