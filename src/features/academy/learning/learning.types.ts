@@ -34,6 +34,7 @@ export interface SectionDto {
   Title: string | null;
   SeasonId: number;
   CreatedDate: string;
+  OrderNumber: number;
 }
 
 export interface TeacherDto {

@@ -55,7 +55,7 @@ export const learningApi = createApi({
           return m.mockGetAllCategories() as any;
         }
         return baseQuery({
-          url: "/Academy/Learning/v1/Category/GetAll",
+          url: "/v1/Academy/Learning/Category/GetAll",
           method: "GET",
         }) as any;
       },
@@ -69,7 +69,7 @@ export const learningApi = createApi({
           return m.mockSearchCategories(value) as any;
         }
         return baseQuery({
-          url: "/Academy/Learning/v1/Category/Search",
+          url: "/v1/Academy/Learning/Category/Search",
           method: "GET",
           params: { value },
         }) as any;
@@ -85,7 +85,7 @@ export const learningApi = createApi({
           return m.mockGetAllCourses() as any;
         }
         return baseQuery({
-          url: "/Academy/Learning/v1/Course/GetAll",
+          url: "/v1/Academy/Learning/Course/GetAll",
           method: "GET",
         }) as any;
       },
@@ -99,7 +99,7 @@ export const learningApi = createApi({
           return m.mockGetCourseById(id) as any;
         }
         return baseQuery({
-          url: `/Academy/Learning/v1/Course/GetById/${id}`,
+          url: `/v1/Academy/Learning/Course/GetById/${id}`,
           method: "GET",
         }) as any;
       },
@@ -116,7 +116,7 @@ export const learningApi = createApi({
           return m.mockCreateCourse(data) as any;
         }
         return baseQuery({
-          url: "/Academy/Learning/v1/Course/Create",
+          url: "/v1/Academy/Learning/Course/Create",
           method: "POST",
           body: toFormData(data as unknown as Record<string, unknown>),
         }) as any;
@@ -134,7 +134,7 @@ export const learningApi = createApi({
           return m.mockUpdateCourse(id, body) as any;
         }
         return baseQuery({
-          url: `/Academy/Learning/v1/Course/Update/${id}`,
+          url: `/v1/Academy/Learning/Course/Update/${id}`,
           method: "PUT",
           body: toFormData(body as unknown as Record<string, unknown>),
         }) as any;
@@ -152,7 +152,7 @@ export const learningApi = createApi({
           return m.mockDeleteCourse(id) as any;
         }
         return baseQuery({
-          url: `/Academy/Learning/v1/Course/Delete/${id}`,
+          url: `/v1/Academy/Learning/Course/Delete/${id}`,
           method: "DELETE",
         }) as any;
       },
@@ -166,7 +166,7 @@ export const learningApi = createApi({
           return m.mockChangeCourseStatus(id) as any;
         }
         return baseQuery({
-          url: `/Academy/Learning/v1/Course/ChangeStatus/${id}`,
+          url: `/v1/Academy/Learning/Course/ChangeStatus/${id}`,
           method: "PATCH",
         }) as any;
       },
@@ -184,7 +184,7 @@ export const learningApi = createApi({
           return m.mockGetSeasonById(id) as any;
         }
         return baseQuery({
-          url: `/Academy/Learning/v1/Season/GetById/${id}`,
+          url: `/v1/Academy/Learning/Season/GetById/${id}`,
           method: "GET",
         }) as any;
       },
@@ -201,7 +201,7 @@ export const learningApi = createApi({
           return m.mockGetSeasonsByCourseId(courseId) as any;
         }
         return baseQuery({
-          url: "/Academy/Learning/v1/Season/GetAllByCourseId",
+          url: "/v1/Academy/Learning/Season/GetAllByCourseId",
           method: "GET",
           params: { courseId },
         }) as any;
@@ -219,7 +219,7 @@ export const learningApi = createApi({
           return m.mockCreateSeason(body) as any;
         }
         return baseQuery({
-          url: "/Academy/Learning/v1/Season/Create",
+          url: "/v1/Academy/Learning/Season/Create",
           method: "POST",
           body,
         }) as any;
@@ -237,7 +237,7 @@ export const learningApi = createApi({
           return m.mockUpdateSeason(id, body) as any;
         }
         return baseQuery({
-          url: `/Academy/Learning/v1/Season/Update/${id}`,
+          url: `/v1/Academy/Learning/Season/Update/${id}`,
           method: "PUT",
           body,
         }) as any;
@@ -255,7 +255,7 @@ export const learningApi = createApi({
           return m.mockDeleteSeason(id) as any;
         }
         return baseQuery({
-          url: `/Academy/Learning/v1/Season/Delete/${id}`,
+          url: `/v1/Academy/Learning/Season/Delete/${id}`,
           method: "DELETE",
         }) as any;
       },
@@ -272,7 +272,7 @@ export const learningApi = createApi({
           return m.mockChangeSeasonOrder(body) as any;
         }
         return baseQuery({
-          url: "/Academy/Learning/v1/Season/ChangeOrder",
+          url: "/v1/Academy/Learning/Season/ChangeOrder",
           method: "PUT",
           body,
         }) as any;
@@ -288,7 +288,7 @@ export const learningApi = createApi({
           return m.mockGetSectionById(id) as any;
         }
         return baseQuery({
-          url: `/Academy/Learning/v1/Section/GetById/${id}`,
+          url: `/v1/Academy/Learning/Section/GetById/${id}`,
           method: "GET",
         }) as any;
       },
@@ -305,7 +305,7 @@ export const learningApi = createApi({
           return m.mockGetSectionsBySeasonId(seasonId) as any;
         }
         return baseQuery({
-          url: "/Academy/Learning/v1/Section/GetBySeasonId",
+          url: "/v1/Academy/Learning/Section/GetBySeasonId",
           method: "GET",
           params: { seasonId },
         }) as any;
@@ -323,7 +323,7 @@ export const learningApi = createApi({
           return m.mockCreateSection(body) as any;
         }
         return baseQuery({
-          url: "/Academy/Learning/v1/Section/Create",
+          url: "/v1/Academy/Learning/Section/Create",
           method: "POST",
           body,
         }) as any;
@@ -341,7 +341,7 @@ export const learningApi = createApi({
           return m.mockUpdateSection(id, body) as any;
         }
         return baseQuery({
-          url: `/Academy/Learning/v1/Section/Update/${id}`,
+          url: `/v1/Academy/Learning/Section/Update/${id}`,
           method: "PUT",
           body,
         }) as any;
@@ -359,7 +359,7 @@ export const learningApi = createApi({
           return m.mockDeleteSection(id) as any;
         }
         return baseQuery({
-          url: `/Academy/Learning/v1/Section/Delete/${id}`,
+          url: `/v1/Academy/Learning/Section/Delete/${id}`,
           method: "DELETE",
         }) as any;
       },
@@ -376,7 +376,7 @@ export const learningApi = createApi({
           return m.mockCreateSectionAndUploadFile(data) as any;
         }
         return baseQuery({
-          url: "/Academy/Learning/v1/Section/CreateAndUploadFile",
+          url: "/v1/Academy/Learning/Section/CreateAndUploadFile",
           method: "POST",
           body: toFormData(data as unknown as Record<string, unknown>),
         }) as any;
@@ -392,7 +392,7 @@ export const learningApi = createApi({
           return m.mockGetAllTeachers() as any;
         }
         return baseQuery({
-          url: "/Academy/Learning/v1/Teacher/GetAll",
+          url: "/v1/Academy/Learning/Teacher/GetAll",
           method: "GET",
         }) as any;
       },
@@ -406,7 +406,7 @@ export const learningApi = createApi({
           return m.mockSearchTeachers(value) as any;
         }
         return baseQuery({
-          url: "/Academy/Learning/v1/Teacher/Search",
+          url: "/v1/Academy/Learning/Teacher/Search",
           method: "GET",
           params: { value },
         }) as any;
@@ -421,7 +421,7 @@ export const learningApi = createApi({
           return m.mockGetTeacherById(id) as any;
         }
         return baseQuery({
-          url: `/Academy/Learning/v1/Teacher/GetById/${id}`,
+          url: `/v1/Academy/Learning/Teacher/GetById/${id}`,
           method: "GET",
         }) as any;
       },
@@ -438,7 +438,7 @@ export const learningApi = createApi({
           return m.mockCreateTeacher(body) as any;
         }
         return baseQuery({
-          url: "/Academy/Learning/v1/Teacher/Create",
+          url: "/v1/Academy/Learning/Teacher/Create",
           method: "POST",
           body: toFormData(body as unknown as Record<string, unknown>),
         }) as any;
@@ -456,7 +456,7 @@ export const learningApi = createApi({
           return m.mockUpdateTeacher(id, body) as any;
         }
         return baseQuery({
-          url: `/Academy/Learning/v1/Teacher/Update/${id}`,
+          url: `/v1/Academy/Learning/Teacher/Update/${id}`,
           method: "PUT",
           body: toFormData(body as unknown as Record<string, unknown>),
         }) as any;
@@ -474,7 +474,7 @@ export const learningApi = createApi({
           return m.mockDeleteTeacher(id) as any;
         }
         return baseQuery({
-          url: `/Academy/Learning/v1/Teacher/Delete/${id}`,
+          url: `/v1/Academy/Learning/Teacher/Delete/${id}`,
           method: "DELETE",
         }) as any;
       },
