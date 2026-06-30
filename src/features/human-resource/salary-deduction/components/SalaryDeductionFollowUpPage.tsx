@@ -74,6 +74,11 @@ function SalaryDeductionFollowUpPageComponent() {
       DetailsComponent={
         <SalaryDeductionFollowUpDetails
           data={data}
+          personnelId={
+            base.requestData?.Data?.PersonnelId
+              ? String(base.requestData.Data.PersonnelId)
+              : ""
+          }
           isLoading={base.isInitialDataLoading}
         />
       }
