@@ -38,7 +38,6 @@ export default function SalaryDeductionStartPageComponent() {
     hasJobPosition: false,
     hasPhoneNumber: false,
     hasEmploymentDate: false,
-    isGuarantee: false,
   });
 
   const { data: bankOptions } = useGetBanksQuery();
@@ -66,7 +65,9 @@ export default function SalaryDeductionStartPageComponent() {
             HasJobPosition: form.hasJobPosition,
             HasPhoneNumber: form.hasPhoneNumber,
             HasEmploymentStartDate: form.hasEmploymentDate,
-            IsGuarantee: form.isGuarantee,
+            IsGuarantee: Boolean(
+              form.guaranteeNationalCode.trim() || form.guaranteeFullName.trim(),
+            ),
           },
         );
         router.push("/task-inbox/requests");
