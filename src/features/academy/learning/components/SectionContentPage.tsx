@@ -175,7 +175,6 @@ export default function SectionContentPage() {
     const video = videoRef.current;
     if (!video) return;
 
-    setVideoDuration(video.duration || 0);
     const savedProgress = Number(localStorage.getItem(progressStorageKey) ?? 0);
     let watched = 0;
     if (savedProgress > 0) {
