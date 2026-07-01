@@ -18,7 +18,7 @@ function SalaryDeductionFollowUpPageComponent() {
   const { data } =
     useGetRequestByProcessRequestIdQuery(
       {
-        requestId: base.requestId || "",
+        processRequestId: base.requestId || "",
         processName: "SalaryDeduction",
         trackingCode: base.trackingCode,
       },

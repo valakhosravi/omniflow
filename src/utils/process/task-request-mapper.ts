@@ -32,6 +32,12 @@ export async function fetchAndMapTasks({
       formName: matched?.taskDefinitionKey ?? "",
       formTitle: matched?.name ?? "",
       taskId: matched?.id ?? "",
+      ColorCode: item.ColorCode,
+      LabelId: item.LabelId,
+      SnoozeId: item.SnoozeId,
+      SnoozeDate: item.SnoozeDate,
+      processName: item.ProcessName,
+      version: item.Version,
     };
   });
 }

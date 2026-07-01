@@ -48,7 +48,7 @@ export const useSalaryDeductionHrmoReviewWorkflow =
 
     const { data: requestResult } = useGetRequestByProcessRequestIdQuery(
       {
-        requestId: base.requestId || "",
+        processRequestId: base.requestId || "",
         processName: "SalaryDeduction",
         trackingCode: base.trackingCode,
       },
@@ -177,7 +177,7 @@ export const useSalaryDeductionHrmoReviewWorkflow =
         trackingCode: base.trackingCode,
         createdDate: request?.CreatedDate || "",
       };
-    }, [requestResult?.Data, base.trackingCode]);
+    }, [requestResult?.Data, base.requestData, base.trackingCode]);
 
     const actions: ActionButton[] = [
       {

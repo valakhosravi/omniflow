@@ -66,7 +66,9 @@ export default function SalaryDeductionStartPageComponent() {
             HasJobPosition: form.hasJobPosition,
             HasPhoneNumber: form.hasPhoneNumber,
             HasEmploymentStartDate: form.hasEmploymentDate,
-            IsGuarantee: form.isGuarantee,
+            IsGuarantee:
+              !!form.guaranteeNationalCode.trim() ||
+              !!form.guaranteeFullName.trim(),
           },
         );
         router.push("/task-inbox/requests");
