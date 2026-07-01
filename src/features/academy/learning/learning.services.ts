@@ -42,7 +42,6 @@ function toFormData<T extends Record<string, unknown>>(data: T): FormData {
   return formData;
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const learningApi = createApi({
   reducerPath: "learningApi",
   baseQuery: baseQueryWithReauth,
@@ -483,8 +482,6 @@ export const learningApi = createApi({
     }),
   }),
 });
-/* eslint-enable @typescript-eslint/no-explicit-any */
-
 export const {
   // Category
   useGetAllCategoriesQuery,
