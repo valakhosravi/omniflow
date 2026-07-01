@@ -38,16 +38,16 @@ export const salaryDeductionApi = createApi({
 
     getRequestByProcessRequestId: builder.query<
       RequestResponse,
-      { requestId: string; trackingCode: string; processName: string }
+      { processRequestId: string; trackingCode: string; processName: string }
     >({
-      query: ({ requestId, trackingCode, processName }) => ({
+      query: ({ processRequestId, trackingCode, processName }) => ({
         url: "/v1/HumanResource/SalaryDeduction/Request/GetByProcessRequestId",
         method: "GET",
         headers: {
           "X-Tracking-Code": trackingCode,
           "X-Process-Name": processName,
         },
-        params: { requestId },
+        params: { processRequestId },
       }),
       providesTags: ["Request"],
     }),

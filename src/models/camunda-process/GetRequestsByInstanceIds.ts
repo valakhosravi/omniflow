@@ -38,4 +38,6 @@ export interface UserRequestsTaskModel {
   LabelId: number | 0;
   SnoozeId: number | 0;
   SnoozeDate: string;
+  processName: string;
+  version: number;
 }

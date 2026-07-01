@@ -33,6 +33,7 @@ export interface SectionDto {
   SectionId: number;
   Title: string | null;
   SeasonId: number;
+  OrderNumber: number;
   CreatedDate: string;
 }
 
