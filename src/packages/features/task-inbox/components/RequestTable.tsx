@@ -117,8 +117,6 @@ export default function RequestTable() {
           const searchParams = new URLSearchParams({
             requestId: id,
           });
-
-          console.log('processName', processName)
           if (processName === "Bug") {
             router.push(`/support/bug/v1/follow-up?${searchParams.toString()}`);
             return;
@@ -159,8 +157,9 @@ export default function RequestTable() {
             return;
           } else if (processName === "SalaryDeduction") {
             router.push(
-              `/human-resource/${pascalToKebab(processName)}/V${version}/follow-up?${searchParams.toString()}`,
+              `/human-resource/${pascalToKebab(processName)}/v${version}/follow-up?${searchParams.toString()}`,
             );
+            return;
           } else {
             router.push(
               `/task-inbox/${processName}/V${version}/follow-up/${id}`,

@@ -95,9 +95,7 @@ export default function SectionContentPage() {
   const sortedSections = useMemo(
     () =>
       [...(sectionsData?.Data ?? [])].sort(
-        (a, b) =>
-          ((a as unknown as Record<string, number>).OrderNumber ?? 0) -
-          ((b as unknown as Record<string, number>).OrderNumber ?? 0),
+        (a, b) => a.OrderNumber - b.OrderNumber,
       ),
     [sectionsData],
   );
