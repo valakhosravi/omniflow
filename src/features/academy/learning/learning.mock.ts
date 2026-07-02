@@ -449,6 +449,7 @@ export async function mockCreateSectionAndUploadFile(
     SectionId: _sectionId++,
     Title: data.Title,
     SeasonId: data.SeasonId,
+    OrderNumber: data.OrderNumber,
     CreatedDate: new Date().toISOString(),
   };
   if (!season.Sections) season.Sections = [];
