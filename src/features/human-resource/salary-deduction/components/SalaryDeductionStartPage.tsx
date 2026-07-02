@@ -47,6 +47,10 @@ export default function SalaryDeductionStartPageComponent() {
     setForm((prev) => ({ ...prev, [key]: value }));
 
   const handleStart = useCallback(async () => {
+    const hasGuarantor =
+      form.guaranteeNationalCode.trim() !== "" ||
+      form.guaranteeFullName.trim() !== "";
+
     if (processByNameAndVersion?.Data?.DefinitionId) {
       try {
         await startProcessWithPayload(
@@ -66,7 +70,7 @@ export default function SalaryDeductionStartPageComponent() {
             HasJobPosition: form.hasJobPosition,
             HasPhoneNumber: form.hasPhoneNumber,
             HasEmploymentStartDate: form.hasEmploymentDate,
-            IsGuarantee: form.isGuarantee,
+            IsGuarantee: form.isGuarantee || hasGuarantor,
           },
         );
         router.push("/task-inbox/requests");
