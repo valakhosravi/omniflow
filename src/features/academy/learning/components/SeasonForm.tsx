@@ -14,7 +14,7 @@ import AppButton from "@/components/common/AppButton/AppButton";
 import { AppIcon } from "@/components/common/AppIcon";
 import useSeasonFormValidation, {
   SeasonFormValues,
-} from "../validations/useSeasonFormValidation";
+} from "../hooks/useSeasonFormValidation";
 import {
   useCreateSeasonMutation,
   useUpdateSeasonMutation,
