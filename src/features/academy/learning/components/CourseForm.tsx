@@ -16,7 +16,7 @@ import { AppIcon } from "@/components/common/AppIcon";
 import { transformToOptions } from "@/ui/RHFSelect";
 import useCourseFormValidation, {
   CourseFormValues,
-} from "../validations/useCourseFormValidation";
+} from "../hooks/useCourseFormValidation";
 import {
   useCreateCourseMutation,
   useUpdateCourseMutation,
@@ -59,7 +59,7 @@ export default function CourseForm({
       setValue("Description", d.Description ?? "");
       setValue("CategoryId", d.CategoryId);
       setValue("TeacherId", d.TeacherId);
-      setValue("DurationHours", Math.ceil(d.DurationMinutes / 60));
+      setValue("DurationHours", d.DurationMinutes / 60);
       setValue("IsActive", d.IsActive);
     } else {
       reset();
